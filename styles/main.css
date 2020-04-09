@@ -1,0 +1,56 @@
+body {
+  margin: 0 auto;
+}
+
+.main-flexbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top-bar {
+  background-color: red;
+  width: 468px;
+  margin-top: 100px;
+  
+}
+
+.grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 850px;
+  margin-top: 0;
+}
+
+
+.grid {
+  display: flex;
+  background-color: pink;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: 572px;
+  width: 468px;
+}
+
+.grid div {
+  border: 1px solid black;
+  width: 50px;
+  height: 50px;
+}
+
+.grid div.rick {
+  background-image: url(../assets/rick-sprite.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+  
+  .grid div.jerry {
+    background-image: url(../assets/alien-jerry-sprite.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
