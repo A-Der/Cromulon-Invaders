@@ -89,8 +89,7 @@ function init() {
   }
       
 
-
-  function startGame() {
+  function jerrysDirections() {
     setTimeout((jerryRight), 1000)
     setTimeout((jerryRight), 2000)
     setTimeout((jerryDown), 3000)
@@ -98,15 +97,16 @@ function init() {
     setTimeout((jerryLeft), 5000)
     setTimeout((jerryDown), 6000)
   }
-  
 
-
+  function jerrysMove() {
+    setInterval((jerrysDirections), 6000)
+  }
 
 
   createGrid()
 
   //*EVENT LISTENERS
-  playBtn.addEventListener('click', startGame)
+  playBtn.addEventListener('click', jerrysMove)
   document.addEventListener('keydown', moveRick)
 
 
