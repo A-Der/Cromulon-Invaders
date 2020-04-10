@@ -31,14 +31,14 @@ body {
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  height: 572px;
+  height: 658px;
   width: 468px;
 }
 
 .grid div {
   border: 1px solid black;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 }
 
 .grid div.rick {
@@ -54,3 +54,17 @@ body {
     background-size: contain;
     background-position: center;
   }
+
+
+  /* function startGame() {
+    const timerId = setInterval(() => {
+      for (let i = 0; i < 7 && i < 16; i++) {
+        for (let j = 9; j < 16; j++) {
+          cells[i].classList.add('jerry')
+          cells[j].classList.add('jerry')
+        }
+      } 
+      
+    }, 2000)
+  
+  } */
