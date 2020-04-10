@@ -9,14 +9,13 @@ function init() {
 
   //*GRID VARIABLES
   const width = 8
-  const cellCount = 99
+  const cellCount = 126
 
 
 
   //* GAME VARIABLES
-  const rickStartIndex = 94
-  const armyInit = []
-
+  let rickIndex = 121
+  let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15]
 
 
 
@@ -28,29 +27,237 @@ function init() {
       grid.appendChild(cell)
       cells.push(cell)
     }
-    cells[rickStartIndex].classList.add('rick')
-    console.log(cells)
+    cells[rickIndex].classList.add('rick')
+
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
   }
-
-   
-
   
-  function startGame() {
-    for (let i = 0; i < 7 && i < 16; i++) {
-      for (let j = 9; j < 16; j++) {
-        cells[i].classList.add('jerry')
-        cells[j].classList.add('jerry')
-      }
-    } 
+  function moveRick(event) {
+    cells[rickIndex].classList.remove('rick')
+    switch (event.keyCode) {
+      case 37:
+        if (rickIndex > 117) {
+          cells[rickIndex--]
+        }
+        break
+      case 39:
+        if (rickIndex < 125){
+          cells[rickIndex++]
+        }
+    }
+    cells[rickIndex].classList.add('rick')
   }
 
 
+  //* JERRYS MOMVEMENTS INDIVIDUAL AND COMBINED
+  function jerryRight() {
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.remove('jerry')
+    })
+    jerrysIndex = jerrysIndex.map(jerry => {
+      return jerry + 1
+    })
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
+  }
+
+  function jerryDown() {
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.remove('jerry')
+    })
+    jerrysIndex = jerrysIndex.map(jerry => {
+      return jerry + 9
+    })
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
+  }
+
+  function jerryLeft() {
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.remove('jerry')
+    })
+    jerrysIndex = jerrysIndex.map(jerry => {
+      return jerry - 1
+    })
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
+  }
+      
+
+  function jerrysDirections() {
+    setTimeout((jerryRight), 1000)
+    setTimeout((jerryRight), 2000)
+    setTimeout((jerryDown), 3000)
+    setTimeout((jerryLeft), 4000)
+    setTimeout((jerryLeft), 5000)
+    setTimeout((jerryDown), 6000)
+  }
+
+  function jerrysMove() {
+    jerrysDirections()
+    setInterval((jerrysDirections), 6000)
+  }
 
 
   createGrid()
 
   //*EVENT LISTENERS
-  playBtn.addEventListener('click', startGame)
+  playBtn.addEventListener('click', jerrysMove)
+  document.addEventListener('keydown', moveRick)
+
+
+
+}
+
+window.addEventListener('DOMContentLoaded', init)
+
+
+
+
+//* 2nd draft
+
+function init() {
+
+
+  //* DOM ELEMENTS
+  const grid = document.querySelector('.grid')
+  const playBtn = document.querySelector('.play-button')
+  const cells = []
+
+
+  //*GRID VARIABLES
+  const width = 11
+  // const cellCount = width * (width + 1)
+  const cellCount = 131
+
+
+
+  //* GAME VARIABLES
+  let rickIndex = 126
+  const jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+
+
+
+  //* FUNCTIONS
+  function createGrid() {
+    for (let i = 0; i < cellCount; i++) {
+      const cell = document.createElement('div')
+      cell.textContent = i
+      grid.appendChild(cell)
+      cells.push(cell)
+    }
+    cells[rickIndex].classList.add('rick')
+
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
+  }
+  
+  function moveRick(event) {
+    cells[rickIndex].classList.remove('rick')
+    switch (event.keyCode) {
+      case 37:
+        if (rickIndex > 121) {
+          cells[rickIndex--]
+        }
+        break
+      case 39:
+        if (rickIndex < 131){
+          cells[rickIndex++]
+        }
+    }
+    cells[rickIndex].classList.add('rick')
+  }
+
+
+  // function moveRick(event) {
+  //   cells[rickIndex].classList.remove('rick')
+  //   switch (event.keyCode) {
+  //     case 37:
+  //       if (rickIndex > 117) {
+  //         cells[rickIndex--]
+  //       }
+  //       break
+  //     case 39:
+  //       if (rickIndex < 125){
+  //         cells[rickIndex++]
+  //       }
+  //   }
+  //   cells[rickIndex].classList.add('rick')
+  // }
+
+
+  console.log(jerrysIndex[jerrysIndex.length - 1])
+
+  // function moveJerrys(event) {
+  //   if (jerrysIndex[jerrysIndex.length - 1] % width === 9) {
+
+  //   }
+  // }
+
+  // //* JERRYS MOMVEMENTS INDIVIDUAL AND COMBINED
+  // function jerryRight() {
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.remove('jerry')
+  //   })
+  //   jerrysIndex = jerrysIndex.map(jerry => {
+  //     return jerry + 1
+  //   })
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.add('jerry')
+  //   })
+  // }
+
+  // function jerryDown() {
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.remove('jerry')
+  //   })
+  //   jerrysIndex = jerrysIndex.map(jerry => {
+  //     return jerry + 9
+  //   })
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.add('jerry')
+  //   })
+  // }
+
+  // function jerryLeft() {
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.remove('jerry')
+  //   })
+  //   jerrysIndex = jerrysIndex.map(jerry => {
+  //     return jerry - 1
+  //   })
+  //   jerrysIndex.forEach(jerry =>  {
+  //     cells[jerry].classList.add('jerry')
+  //   })
+  // }
+      
+
+  // function jerrysDirections() {
+  //   setTimeout((jerryRight), 1000)
+  //   setTimeout((jerryRight), 2000)
+  //   setTimeout((jerryDown), 3000)
+  //   setTimeout((jerryLeft), 4000)
+  //   setTimeout((jerryLeft), 5000)
+  //   setTimeout((jerryDown), 6000)
+  // }
+
+  // function jerrysMove() {
+  //   jerrysDirections()
+  //   setInterval((jerrysDirections), 6000)
+  // }
+
+
+  createGrid()
+
+  //*EVENT LISTENERS
+  // playBtn.addEventListener('click', jerrysMove)
+  document.addEventListener('keydown', moveRick)
 
 
 
