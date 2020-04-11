@@ -18,6 +18,8 @@ function init() {
   let rickIndex = 148
   let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   let direction = 'r'
+  // const laserIndex = rickIndex - width
+  
 
 
 
@@ -52,7 +54,7 @@ function init() {
     cells[rickIndex].classList.add('rick')
   }
 
-
+  //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
   function jerrysMoves() { 
     if ((jerrysIndex[0] % width === 0) && (direction === 'r')) {
       jerrysIndex.forEach(jerry =>  {
@@ -124,7 +126,7 @@ function init() {
     }
   }
   
-
+  //* ACTUAL FUNCTION TO MVE JERRY UNTIL HE REACHES RICKS ROW
   function movingJerry() {
     const timerId =  setInterval(() => {
       if (jerrysIndex[0] !== (width * (width + 1))) {
@@ -133,17 +135,53 @@ function init() {
         clearInterval(timerId)
         console.log('fin')
       }
-    }, 300)
+    }, 1000)
   }
 
+  function laser() {
+    let laserIndex = rickIndex - width
+    const timerId = setInterval(() => {
+
+      if (!cells[laserIndex].classList.contains('jerry')) {
+        cells[laserIndex].classList.add('laser')
+        laserIndex = laserIndex - 11
+      } else {
+        clearInterval(timerId)
+        console.log('jerry shot') 
+      }
+    },100)
+  }
+  // if (cells[laserIndex].classList !== ('jerry')) {
+  //   cells[laserIndex].classList.add('laser')
+  // } else {
+  //   console.log('jerry shot')
+  // }
+  
+
   function shoot(event) {
-    const laserI = rickIndex - 11
+    event.preventDefault() 
     if (event.keyCode === 32) {
-      event.preventDefault()  
-      cells[laserI].classList.add('laser')
-      console.log(laserI)
+      laser()
     }
   }
+  
+  
+  
+
+
+  // const timerId = setInterval(  {
+  //   if (!(laserIndex - 11).classList('jerry')) {
+  //     shoot()
+  //   } else {
+  //     clearInterval(timerId)
+  //     console.log('jerry is shot')
+  //   }
+
+
+
+  // }, 100)
+
+  
 
   createGrid()
 
