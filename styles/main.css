@@ -55,6 +55,12 @@ body {
     background-position: center;
   }
 
+  .grid div.laser {
+    background-image: url(../assets/laser.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
 
   /* function startGame() {
     const timerId = setInterval(() => {

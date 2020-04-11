@@ -121,11 +121,8 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
-    } 
-    
-    
+    }
   }
-  
   
 
   function movingJerry() {
@@ -139,13 +136,21 @@ function init() {
     }, 300)
   }
 
-
+  function shoot(event) {
+    const laserI = rickIndex - 11
+    if (event.keyCode === 32) {
+      event.preventDefault()  
+      cells[laserI].classList.add('laser')
+      console.log(laserI)
+    }
+  }
 
   createGrid()
 
   //*EVENT LISTENERS
   playBtn.addEventListener('click', movingJerry)
   document.addEventListener('keydown', moveRick)
+  document.addEventListener('keydown', shoot)
 
 
 
