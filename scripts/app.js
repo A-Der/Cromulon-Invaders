@@ -5,6 +5,7 @@ function init() {
   const grid = document.querySelector('.grid')
   const playBtn = document.querySelector('.play-button')
   const cells = []
+  const topBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
   //*GRID VARIABLES
@@ -126,7 +127,7 @@ function init() {
     }
   }
   
-  //* ACTUAL FUNCTION TO MVE JERRY UNTIL HE REACHES RICKS ROW
+  //* ACTUAL FUNCTION TO MOVE JERRY UNTIL HE REACHES RICKS ROW
   function movingJerry() {
     const timerId =  setInterval(() => {
       if (jerrysIndex[0] !== (width * (width + 1))) {
@@ -142,12 +143,20 @@ function init() {
     let laserIndex = rickIndex - width
     const timerId = setInterval(() => {
 
-      if (!cells[laserIndex].classList.contains('jerry')) {
-        cells[laserIndex].classList.add('laser')
-        laserIndex = laserIndex - 11
-      } else {
+      if (cells[laserIndex].classList.contains('jerry')) {
         clearInterval(timerId)
+        cells[laserIndex].classList.remove('jerry')
+        cells[laserIndex].classList.remove('laser')
+        
         console.log('jerry shot') 
+      
+      } else if (laserIndex < width) {
+        cells[laserIndex].classList.remove('laser')
+      } else {
+        cells[laserIndex].classList.remove('laser')
+        laserIndex = laserIndex - 11
+        cells[laserIndex].classList.add('laser')
+        
       }
     },100)
   }

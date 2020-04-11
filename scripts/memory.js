@@ -259,3 +259,24 @@ function init() {
 }
 
 window.addEventListener('DOMContentLoaded', init)
+
+
+
+
+//*lasers working kinda
+function laser() {
+  let laserIndex = rickIndex - width
+  const timerId = setInterval(() => {
+
+    if (cells[laserIndex].classList.contains('jerry')) {
+      clearInterval(timerId)
+      console.log('jerry shot') 
+    
+    } else {
+      cells[laserIndex].classList.remove('laser')
+      laserIndex = laserIndex - 11
+      cells[laserIndex].classList.add('laser')
+      
+    }
+  },100)
+}
