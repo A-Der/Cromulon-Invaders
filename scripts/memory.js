@@ -132,14 +132,15 @@ function init() {
 
   //*GRID VARIABLES
   const width = 11
-  // const cellCount = width * (width + 1)
-  const cellCount = 131
+  const cellCount = width * (width + 1)
+
 
 
 
   //* GAME VARIABLES
   let rickIndex = 126
-  const jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+  let direction = 'r'
 
 
 
@@ -152,7 +153,6 @@ function init() {
       cells.push(cell)
     }
     cells[rickIndex].classList.add('rick')
-
     jerrysIndex.forEach(jerry =>  {
       cells[jerry].classList.add('jerry')
     })
@@ -175,88 +175,83 @@ function init() {
   }
 
 
-  // function moveRick(event) {
-  //   cells[rickIndex].classList.remove('rick')
-  //   switch (event.keyCode) {
-  //     case 37:
-  //       if (rickIndex > 117) {
-  //         cells[rickIndex--]
-  //       }
-  //       break
-  //     case 39:
-  //       if (rickIndex < 125){
-  //         cells[rickIndex++]
-  //       }
-  //   }
-  //   cells[rickIndex].classList.add('rick')
-  // }
+  function jerrysMoves() { 
+    if ((jerrysIndex[0] % width === 0) && (direction === 'r')) {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry + 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    } else if ((jerrysIndex[0] % width === 1) && (direction === 'r')) {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry + 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    } else if ((jerrysIndex[0] % width === 2) && (direction === 'r')) {
+      direction = 'l'
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry + 11
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    } else if ((jerrysIndex[0] % width === 2) && (direction === 'l')) {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry - 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    } else if ((jerrysIndex[0] % width === 1) && (direction === 'l')) {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry - 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    } else if ((jerrysIndex[0] % width === 0) && (direction === 'l')) {
+      direction = 'r'
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry + 11
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+    }
+  }
 
+  function movingJerry() {
+    jerrysMoves()
+    setInterval((jerrysMoves), 1000)
+  }
 
-  console.log(jerrysIndex[jerrysIndex.length - 1])
-
-  // function moveJerrys(event) {
-  //   if (jerrysIndex[jerrysIndex.length - 1] % width === 9) {
-
-  //   }
-  // }
-
-  // //* JERRYS MOMVEMENTS INDIVIDUAL AND COMBINED
-  // function jerryRight() {
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.remove('jerry')
-  //   })
-  //   jerrysIndex = jerrysIndex.map(jerry => {
-  //     return jerry + 1
-  //   })
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.add('jerry')
-  //   })
-  // }
-
-  // function jerryDown() {
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.remove('jerry')
-  //   })
-  //   jerrysIndex = jerrysIndex.map(jerry => {
-  //     return jerry + 9
-  //   })
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.add('jerry')
-  //   })
-  // }
-
-  // function jerryLeft() {
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.remove('jerry')
-  //   })
-  //   jerrysIndex = jerrysIndex.map(jerry => {
-  //     return jerry - 1
-  //   })
-  //   jerrysIndex.forEach(jerry =>  {
-  //     cells[jerry].classList.add('jerry')
-  //   })
-  // }
-      
-
-  // function jerrysDirections() {
-  //   setTimeout((jerryRight), 1000)
-  //   setTimeout((jerryRight), 2000)
-  //   setTimeout((jerryDown), 3000)
-  //   setTimeout((jerryLeft), 4000)
-  //   setTimeout((jerryLeft), 5000)
-  //   setTimeout((jerryDown), 6000)
-  // }
-
-  // function jerrysMove() {
-  //   jerrysDirections()
-  //   setInterval((jerrysDirections), 6000)
-  // }
 
 
   createGrid()
 
   //*EVENT LISTENERS
-  // playBtn.addEventListener('click', jerrysMove)
+  playBtn.addEventListener('click', movingJerry)
   document.addEventListener('keydown', moveRick)
 
 
