@@ -5,7 +5,7 @@ function init() {
   const grid = document.querySelector('.grid')
   const playBtn = document.querySelector('.play-button')
   const cells = []
-  const topBoard = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  const scoreDisplay = document.querySelector('#score')
 
 
   //*GRID VARIABLES
@@ -19,6 +19,8 @@ function init() {
   let rickIndex = 148
   let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   let direction = 'r'
+  let playerScore = 0
+  let rickDead = false
   // const laserIndex = rickIndex - width
   
 
@@ -134,6 +136,7 @@ function init() {
         jerrysMoves()
       } else {
         clearInterval(timerId)
+        rickDead = true
         console.log('fin')
       }
     }, 1000)
@@ -142,13 +145,13 @@ function init() {
   function laser() {
     let laserIndex = rickIndex - width
     const timerId = setInterval(() => {
-
       if (cells[laserIndex].classList.contains('jerry')) {
         clearInterval(timerId)
         cells[laserIndex].classList.remove('jerry')
         cells[laserIndex].classList.remove('laser')
-        
-        console.log('jerry shot') 
+        playerScore += 100
+        scoreDisplay.textContent = playerScore
+        console.log('jerry shot')
       
       } else if (laserIndex < width) {
         cells[laserIndex].classList.remove('laser')
@@ -156,17 +159,10 @@ function init() {
         cells[laserIndex].classList.remove('laser')
         laserIndex = laserIndex - 11
         cells[laserIndex].classList.add('laser')
-        
       }
     },100)
   }
-  // if (cells[laserIndex].classList !== ('jerry')) {
-  //   cells[laserIndex].classList.add('laser')
-  // } else {
-  //   console.log('jerry shot')
-  // }
   
-
   function shoot(event) {
     event.preventDefault() 
     if (event.keyCode === 32) {
@@ -175,21 +171,6 @@ function init() {
   }
   
   
-  
-
-
-  // const timerId = setInterval(  {
-  //   if (!(laserIndex - 11).classList('jerry')) {
-  //     shoot()
-  //   } else {
-  //     clearInterval(timerId)
-  //     console.log('jerry is shot')
-  //   }
-
-
-
-  // }, 100)
-
   
 
   createGrid()
