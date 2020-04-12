@@ -280,3 +280,26 @@ function laser() {
     }
   },100)
 }
+
+//* original moving jerry. but jerrys loads back
+function movingJerry() {
+
+  const timerId1 = setInterval(() => {
+
+    if (rickDead === false) {
+      const timerId0 =  setInterval(() => {
+        if (jerrysIndex[0] !== (width * (width + 1))) {
+          jerrysMoves()
+        } else {
+          clearInterval(timerId0)
+          rickDead = true
+          console.log('fin')
+        }
+      }, 1000)
+    } else {
+      clearInterval(timerId1)
+    }
+
+
+
+  }, 2000)

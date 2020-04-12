@@ -6,6 +6,7 @@ function init() {
   const playBtn = document.querySelector('.play-button')
   const cells = []
   const scoreDisplay = document.querySelector('#score')
+  
 
 
   //*GRID VARIABLES
@@ -56,6 +57,52 @@ function init() {
     }
     cells[rickIndex].classList.add('rick')
   }
+
+
+  // function laser() {
+     
+  //   let laserIndex = rickIndex - width
+  //   const timerId = setInterval(() => {
+
+  //     if (cells[laserIndex].classList.contains('jerry')) {
+  //       clearInterval(timerId)
+
+  //       const killedJerrys = jerrysIndex.splice(laserIndex, 1, 'x')
+  //       console.log(killedJerrys)
+  //       jerrysIndex.splice(laserIndex, 1, 'x')
+  //       console.log(killedJerrys)
+  //       cells[laserIndex].classList.remove('jerry') 
+
+  //       cells[killedJerrys].classList.add('x')
+
+  //       cells[laserIndex].classList.remove('laser')
+
+        
+  //       playerScore += 100
+  //       scoreDisplay.textContent = playerScore  
+  //       console.log('jerry shot')
+      
+      
+
+  //       //* LASER DOESNT GO BEYOND TOP OF BOARD
+  //     } else if (laserIndex < width) {
+  //       cells[laserIndex].classList.remove('laser')
+  //       //*LASER CONTINUES SHOOTING UP
+  //     } else {
+  //       cells[laserIndex].classList.remove('laser')
+  //       laserIndex = laserIndex - 11
+  //       cells[laserIndex].classList.add('laser')
+  //     }
+  //   },30) 
+  // }
+  
+  // function shoot(event) {
+  //   event.preventDefault() 
+  //   if (event.keyCode === 32) {
+  //     laser()
+  //   }
+  // }
+
 
   //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
   function jerrysMoves() { 
@@ -131,44 +178,70 @@ function init() {
   
   //* ACTUAL FUNCTION TO MOVE JERRY UNTIL HE REACHES RICKS ROW
   function movingJerry() {
-    const timerId =  setInterval(() => {
+
+
+    const timerId0 =  setInterval(() => {
       if (jerrysIndex[0] !== (width * (width + 1))) {
         jerrysMoves()
       } else {
-        clearInterval(timerId)
+        clearInterval(timerId0)
         rickDead = true
         console.log('fin')
       }
     }, 1000)
+  
   }
 
+
+
   function laser() {
+     
     let laserIndex = rickIndex - width
     const timerId = setInterval(() => {
+
       if (cells[laserIndex].classList.contains('jerry')) {
         clearInterval(timerId)
-        cells[laserIndex].classList.remove('jerry')
+
+        cells[laserIndex].classList.remove('jerry') 
+        
+        jerrysIndex = jerrysIndex.filter(jerry => {
+          return cells[jerry].classList.contains('jerry')
+        })
+
+
+
+  
+
+
         cells[laserIndex].classList.remove('laser')
+
+        
         playerScore += 100
-        scoreDisplay.textContent = playerScore
+        scoreDisplay.textContent = playerScore  
         console.log('jerry shot')
-      
+
+
+        //* LASER DOESNT GO BEYOND TOP OF BOARD
       } else if (laserIndex < width) {
         cells[laserIndex].classList.remove('laser')
+        //*LASER CONTINUES SHOOTING UP
       } else {
         cells[laserIndex].classList.remove('laser')
         laserIndex = laserIndex - 11
         cells[laserIndex].classList.add('laser')
       }
-    },100)
+    },30) 
   }
   
+
+
   function shoot(event) {
     event.preventDefault() 
     if (event.keyCode === 32) {
       laser()
     }
   }
+  
   
   
   

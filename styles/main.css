@@ -62,6 +62,11 @@ body {
     background-position: center;
   }
 
+  .grid div.x {
+    background-color: red;
+    font-size: 30px;
+  }
+
   /* function startGame() {
     const timerId = setInterval(() => {
       for (let i = 0; i < 7 && i < 16; i++) {
