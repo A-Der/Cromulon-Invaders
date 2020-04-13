@@ -21,7 +21,6 @@ function init() {
   let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   let direction = 'r'
   let playerScore = 0
-  const rickDead = false
   let confirm = false
   let result = 'won'
   playBtn.disabled = false
@@ -39,10 +38,6 @@ function init() {
       cells.push(cell)
     }
     cells[rickIndex].classList.add('rick')
-
-    jerrysIndex.forEach(jerry =>  {
-      cells[jerry].classList.add('jerry')
-    })
   }
   
   //*KEYBOARD CONTROLS -> MOVE RICK AND SHOOT
@@ -69,7 +64,7 @@ function init() {
   }
     
 
-  //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
+  //* LOGIC TO WORK OUT WHERE JERRY MOVES TO. NEEDS TO BE UPDATED SO THAT IF *ANY* JERRY EQUALS LEFT SIDE OF RIGHT SIDE.
   function jerrysMoves() { 
     const leftSide = jerrysIndex[0] % width === 0
     const rightSide = jerrysIndex[jerrysIndex.length - 1] % width === 10
@@ -123,6 +118,7 @@ function init() {
     } 
   }
 
+  //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
     let laserIndex = rickIndex - width
     const timerId = setInterval(() => {
@@ -153,9 +149,12 @@ function init() {
   }
   
   
-  //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS ROW
+  //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS OR RICK KILLS ALL JERRYS - TRIGGERS PLAYAGAIN FUNCTION
   function startGame() {
     playBtn.disabled = true
+    jerrysIndex.forEach(jerry =>  {
+      cells[jerry].classList.add('jerry')
+    })
   
     const timerId0 =  setInterval(() => {
       if (jerrysIndex.length  === 0) {
@@ -171,9 +170,10 @@ function init() {
         playAgain()
         clearInterval(timerId0)
       }
-    }, 10)
+    }, 100)
   }
 
+  //*DISPLAYS IF WIN OR LOSE, SCORE AND OPTION TO PLAY AGAIN
   function playAgain() {
     confirm = window.confirm('You ' + (result) + ' You scored ' + (scoreDisplay.textContent) + ', play again?')
     if (confirm === true) {
