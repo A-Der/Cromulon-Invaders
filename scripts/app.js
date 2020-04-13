@@ -22,6 +22,8 @@ function init() {
   let direction = 'r'
   let playerScore = 0
   let rickDead = false
+  let confirm = false
+  playBtn.disabled = false
   // const laserIndex = rickIndex - width
   
 
@@ -42,74 +44,34 @@ function init() {
     })
   }
   
-  function moveRick(event) {
-    cells[rickIndex].classList.remove('rick')
+  //*KEYBOARD CONTROLS -> MOVE RICK AND SHOOT
+  function handleKeyDown(event) {
     switch (event.keyCode) {
       case 37:
         if (rickIndex > 143) {
+          cells[rickIndex].classList.remove('rick')
           cells[rickIndex--]
+          cells[rickIndex].classList.add('rick')
         }
         break
       case 39:
         if (rickIndex < 153){
+          cells[rickIndex].classList.remove('rick')
           cells[rickIndex++]
+          cells[rickIndex].classList.add('rick')
         }
+        break
+      case 32:
+        event.preventDefault()
+        laser()
     }
-    cells[rickIndex].classList.add('rick')
   }
-
-
-  // function laser() {
-     
-  //   let laserIndex = rickIndex - width
-  //   const timerId = setInterval(() => {
-
-  //     if (cells[laserIndex].classList.contains('jerry')) {
-  //       clearInterval(timerId)
-
-  //       const killedJerrys = jerrysIndex.splice(laserIndex, 1, 'x')
-  //       console.log(killedJerrys)
-  //       jerrysIndex.splice(laserIndex, 1, 'x')
-  //       console.log(killedJerrys)
-  //       cells[laserIndex].classList.remove('jerry') 
-
-  //       cells[killedJerrys].classList.add('x')
-
-  //       cells[laserIndex].classList.remove('laser')
-
-        
-  //       playerScore += 100
-  //       scoreDisplay.textContent = playerScore  
-  //       console.log('jerry shot')
-      
-      
-
-  //       //* LASER DOESNT GO BEYOND TOP OF BOARD
-  //     } else if (laserIndex < width) {
-  //       cells[laserIndex].classList.remove('laser')
-  //       //*LASER CONTINUES SHOOTING UP
-  //     } else {
-  //       cells[laserIndex].classList.remove('laser')
-  //       laserIndex = laserIndex - 11
-  //       cells[laserIndex].classList.add('laser')
-  //     }
-  //   },30) 
-  // }
-  
-  // function shoot(event) {
-  //   event.preventDefault() 
-  //   if (event.keyCode === 32) {
-  //     laser()
-  //   }
-  // }
-
+    
 
   //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
   function jerrysMoves() { 
     const leftSide = jerrysIndex[0] % width === 0
     const rightSide = jerrysIndex[jerrysIndex.length - 1] % width === 10
-    
-
 
     if (rightSide && direction === 'r') {
       direction = 'l'
@@ -134,7 +96,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
-      
+
     } else if (direction === 'r') {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -159,51 +121,23 @@ function init() {
 
     } 
   }
-  
-  //* ACTUAL FUNCTION TO MOVE JERRY UNTIL HE REACHES RICKS ROW
-  function movingJerry() {
 
-
-    const timerId0 =  setInterval(() => {
-      if (jerrysIndex[0] !== (width * (width + 1))) {
-        jerrysMoves()
-      } else {
-        clearInterval(timerId0)
-        rickDead = true
-        console.log('fin')
-      }
-    }, 1000)
-  
-  }
-
-
-  //* LASER IS KILLING JERRYS AND FILTERING OUT REMAINING JERRYS HOWEVER SOMETIMES STOPS MOVING; THIS IS BECAUSE IN MY JERRY MOVES FUNCTION IT IS USING ONLY COLUMNS 0,1,2. AFTER KILLING SOME JERRYS JERRY[0] COULD BE IN A DIFFERENT COLUMN
   function laser() {
-     
     let laserIndex = rickIndex - width
     const timerId = setInterval(() => {
 
       if (cells[laserIndex].classList.contains('jerry')) {
+
         clearInterval(timerId)
-
-        console.log(jerrysIndex)
-        console.log(jerrysIndex[0])
-
         cells[laserIndex].classList.remove('jerry') 
         jerrysIndex = jerrysIndex.filter(jerry => {
           return cells[jerry].classList.contains('jerry')
         })
 
-        console.log(jerrysIndex)
-        console.log(jerrysIndex[0])
-
         cells[laserIndex].classList.remove('laser')
-
-        
         playerScore += 100
         scoreDisplay.textContent = playerScore  
         console.log('jerry shot')
-
 
         //* LASER DOESNT GO BEYOND TOP OF BOARD
       } else if (laserIndex < width) {
@@ -217,14 +151,35 @@ function init() {
     },30) 
   }
   
+  
+  //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS ROW
+  function startGame() {
+    playBtn.disabled = true
+  
+    const timerId0 =  setInterval(() => {
+      if (jerrysIndex.length  === 0) {
+        console.log('you won!')
+      
+      } else if (jerrysIndex[jerrysIndex.length - 1] < (width * (width + 2))) {
+        jerrysMoves()
 
+      } else {
+        rickDead = true
+        clearInterval(timerId0)
+        playAgain()
+      }
+    }, 10)
+  }
 
-  function shoot(event) {
-    event.preventDefault() 
-    if (event.keyCode === 32) {
-      laser()
+  function playAgain() {
+    confirm = window.confirm('You Died! You scored ' + (scoreDisplay.textContent) + ', play again?')
+    if (confirm === true) {
+      document.location.href = ''
+    } else {
+      window.alert('Bye')
     }
   }
+
   
   
   
@@ -233,9 +188,9 @@ function init() {
   createGrid()
 
   //*EVENT LISTENERS
-  playBtn.addEventListener('click', movingJerry)
-  document.addEventListener('keydown', moveRick)
-  document.addEventListener('keydown', shoot)
+  playBtn.addEventListener('click', startGame)
+  document.addEventListener('keydown', handleKeyDown)
+
 
 
 
