@@ -21,8 +21,9 @@ function init() {
   let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19]
   let direction = 'r'
   let playerScore = 0
-  let rickDead = false
+  const rickDead = false
   let confirm = false
+  let result = 'won'
   playBtn.disabled = false
   // const laserIndex = rickIndex - width
   
@@ -158,21 +159,23 @@ function init() {
   
     const timerId0 =  setInterval(() => {
       if (jerrysIndex.length  === 0) {
-        console.log('you won!')
+        result = 'won!'
+        playAgain()
+        clearInterval(timerId0)
       
       } else if (jerrysIndex[jerrysIndex.length - 1] < (width * (width + 2))) {
         jerrysMoves()
 
       } else {
-        rickDead = true
-        clearInterval(timerId0)
+        result = 'died!'
         playAgain()
+        clearInterval(timerId0)
       }
     }, 10)
   }
 
   function playAgain() {
-    confirm = window.confirm('You Died! You scored ' + (scoreDisplay.textContent) + ', play again?')
+    confirm = window.confirm('You ' + (result) + ' You scored ' + (scoreDisplay.textContent) + ', play again?')
     if (confirm === true) {
       document.location.href = ''
     } else {
