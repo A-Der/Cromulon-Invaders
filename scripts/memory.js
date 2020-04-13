@@ -175,8 +175,12 @@ function init() {
   }
 
 
+  //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
   function jerrysMoves() { 
-    if ((jerrysIndex[0] % width === 0) && (direction === 'r')) {
+    const leftSide = jerrysIndex[0] % width === 0
+    const rightSide = jerrysIndex[jerrysIndex.length - 1] % width === 10
+
+    if (leftSide && (direction === 'r')) {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
       })
@@ -186,6 +190,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
+
     } else if ((jerrysIndex[0] % width === 1) && (direction === 'r')) {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -196,6 +201,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
+
     } else if ((jerrysIndex[0] % width === 2) && (direction === 'r')) {
       direction = 'l'
       jerrysIndex.forEach(jerry =>  {
@@ -207,6 +213,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
+
     } else if ((jerrysIndex[0] % width === 2) && (direction === 'l')) {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -217,6 +224,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
+
     } else if ((jerrysIndex[0] % width === 1) && (direction === 'l')) {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -227,6 +235,7 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
+
     } else if ((jerrysIndex[0] % width === 0) && (direction === 'l')) {
       direction = 'r'
       jerrysIndex.forEach(jerry =>  {
@@ -303,3 +312,84 @@ function movingJerry() {
 
 
   }, 2000)
+
+
+
+
+
+  function laser() {
+     
+    let laserIndex = rickIndex - width
+    const timerId = setInterval(() => {
+
+      if (cells[laserIndex].classList.contains('jerry')) {
+        clearInterval(timerId)
+
+        const killedJerrys = []
+
+        console.log(killedJerrys)
+        let shotJerrys = jerrysIndex.splice(laserIndex, 1, 'x')
+        killedJerrys.push(shotJerrys)
+
+
+        console.log(killedJerrys)
+        cells[laserIndex].classList.remove('jerry') 
+
+        cells[killedJerrys].classList.add('x')
+
+        cells[laserIndex].classList.remove('laser')
+
+        
+        playerScore += 100
+        scoreDisplay.textContent = playerScore  
+        console.log('jerry shot')
+
+               //* LASER DOESNT GO BEYOND TOP OF BOARD
+      } else if (laserIndex < width) {
+        cells[laserIndex].classList.remove('laser')
+        //*LASER CONTINUES SHOOTING UP
+      } else {
+        cells[laserIndex].classList.remove('laser')
+        laserIndex = laserIndex - 11
+        cells[laserIndex].classList.add('laser')
+      }
+    },30) 
+  }
+  
+  function shoot(event) {
+    event.preventDefault() 
+    if (event.keyCode === 32) {
+      laser()
+    }
+  }
+
+
+
+        //* lasers working
+
+  function laser() {
+    let laserIndex = rickIndex - width
+
+    const timerId = setInterval(() => {
+      if (cells[laserIndex].classList.contains('jerry')) {
+
+        clearInterval(timerId)
+        
+        console.log(jerrysIndex[0])
+        jerrysIndex = jerrysIndex.splice(laserIndex, 1)
+        cells[laserIndex].classList.remove('jerry') 
+        cells[laserIndex].classList.remove('laser')
+        playerScore += 100
+        scoreDisplay.textContent = playerScore  
+        console.log('jerry shot')
+        console.log(jerrysIndex[0])
+      
+      } else if (laserIndex < width) {
+        cells[laserIndex].classList.remove('laser')
+      } else {
+        cells[laserIndex].classList.remove('laser')
+        laserIndex = laserIndex - 11
+        cells[laserIndex].classList.add('laser')
+      }
+    },30) 
+  }

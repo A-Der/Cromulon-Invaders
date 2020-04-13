@@ -106,29 +106,12 @@ function init() {
 
   //* LOGIC TO WORK OUT WHERE JERRY MOVES TO
   function jerrysMoves() { 
-    if ((jerrysIndex[0] % width === 0) && (direction === 'r')) {
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.remove('jerry')
-      })
-      jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 1
-      })
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.add('jerry')
-      })
+    const leftSide = jerrysIndex[0] % width === 0
+    const rightSide = jerrysIndex[jerrysIndex.length - 1] % width === 10
+    
 
-    } else if ((jerrysIndex[0] % width === 1) && (direction === 'r')) {
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.remove('jerry')
-      })
-      jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 1
-      })
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.add('jerry')
-      })
 
-    } else if ((jerrysIndex[0] % width === 2) && (direction === 'r')) {
+    if (rightSide && direction === 'r') {
       direction = 'l'
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -140,29 +123,7 @@ function init() {
         cells[jerry].classList.add('jerry')
       })
 
-    } else if ((jerrysIndex[0] % width === 2) && (direction === 'l')) {
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.remove('jerry')
-      })
-      jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry - 1
-      })
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.add('jerry')
-      })
-
-    } else if ((jerrysIndex[0] % width === 1) && (direction === 'l')) {
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.remove('jerry')
-      })
-      jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry - 1
-      })
-      jerrysIndex.forEach(jerry =>  {
-        cells[jerry].classList.add('jerry')
-      })
-
-    } else if ((jerrysIndex[0] % width === 0) && (direction === 'l')) {
+    } else if (leftSide === true && direction === 'l') {
       direction = 'r'
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.remove('jerry')
@@ -173,7 +134,30 @@ function init() {
       jerrysIndex.forEach(jerry =>  {
         cells[jerry].classList.add('jerry')
       })
-    }
+      
+    } else if (direction === 'r') {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry + 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+
+    } else if (direction === 'l') {
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.remove('jerry')
+      })
+      jerrysIndex = jerrysIndex.map(jerry => {
+        return jerry - 1
+      })
+      jerrysIndex.forEach(jerry =>  {
+        cells[jerry].classList.add('jerry')
+      })
+
+    } 
   }
   
   //* ACTUAL FUNCTION TO MOVE JERRY UNTIL HE REACHES RICKS ROW
@@ -193,7 +177,7 @@ function init() {
   }
 
 
-
+  //* LASER IS KILLING JERRYS AND FILTERING OUT REMAINING JERRYS HOWEVER SOMETIMES STOPS MOVING; THIS IS BECAUSE IN MY JERRY MOVES FUNCTION IT IS USING ONLY COLUMNS 0,1,2. AFTER KILLING SOME JERRYS JERRY[0] COULD BE IN A DIFFERENT COLUMN
   function laser() {
      
     let laserIndex = rickIndex - width
@@ -202,16 +186,16 @@ function init() {
       if (cells[laserIndex].classList.contains('jerry')) {
         clearInterval(timerId)
 
+        console.log(jerrysIndex)
+        console.log(jerrysIndex[0])
+
         cells[laserIndex].classList.remove('jerry') 
-        
         jerrysIndex = jerrysIndex.filter(jerry => {
           return cells[jerry].classList.contains('jerry')
         })
 
-
-
-  
-
+        console.log(jerrysIndex)
+        console.log(jerrysIndex[0])
 
         cells[laserIndex].classList.remove('laser')
 
