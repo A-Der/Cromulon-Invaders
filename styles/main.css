@@ -31,7 +31,7 @@ body {
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  height: 658px;
+  height: 705px;
   width: 517px;
 }
 
@@ -69,6 +69,12 @@ body {
     background-position: center;
   }
 
+  .grid div.explosion {
+    background-image: url(../assets/explosion.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
   /* function startGame() {
     const timerId = setInterval(() => {
       for (let i = 0; i < 7 && i < 16; i++) {
