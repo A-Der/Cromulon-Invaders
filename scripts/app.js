@@ -7,6 +7,8 @@ function init() {
   const cells = []
   const scoreDisplay = document.querySelector('#score')
   const mainAudio = document.querySelector('#main')
+  const secondAudio = document.querySelector('#secondary')
+  const thirdAudio = document.querySelector('#third')
   
 
 
@@ -19,13 +21,44 @@ function init() {
 
   //* GAME VARIABLES
   let rickIndex = 148
-  let jerrysIndex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14, 15, 16, 17, 18, 19, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-  // const swarm = Array.from(jerrysIndex)
+  const rickDead = false
+  const armyIndex = [
+    { currentIndex: 0, isAlive: true },
+    { currentIndex: 1, isAlive: true },
+    { currentIndex: 2, isAlive: true },
+    { currentIndex: 3, isAlive: true },
+    { currentIndex: 4, isAlive: true },
+    { currentIndex: 5, isAlive: true },
+    { currentIndex: 6, isAlive: true },
+    { currentIndex: 7, isAlive: true },
+    { currentIndex: 8, isAlive: true },
+    { currentIndex: 11, isAlive: true },
+    { currentIndex: 12, isAlive: true },
+    { currentIndex: 13, isAlive: true },
+    { currentIndex: 14, isAlive: true },
+    { currentIndex: 15, isAlive: true },
+    { currentIndex: 16, isAlive: true },
+    { currentIndex: 17, isAlive: true },
+    { currentIndex: 18, isAlive: true },
+    { currentIndex: 19, isAlive: true },
+    { currentIndex: 22, isAlive: true },
+    { currentIndex: 23, isAlive: true },
+    { currentIndex: 24, isAlive: true },
+    { currentIndex: 25, isAlive: true },
+    { currentIndex: 26, isAlive: true },
+    { currentIndex: 27, isAlive: true },
+    { currentIndex: 28, isAlive: true },
+    { currentIndex: 29, isAlive: true },
+    { currentIndex: 30, isAlive: true }
+  ]
+  let jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
+  const aliveJerrys = []
   let direction = 'r'
   let playerScore = 0
   let playingNow = false
   let result = 'won'
   playBtn.disabled = false
+  
   // Array.prototype.addJerry = function() {
   //   this.forEach(i => {
   //     cells[i].classList.add('Jerry')
@@ -49,8 +82,10 @@ function init() {
       cells.push(cell)
     }
     cells[rickIndex].classList.add('rick')
-    jerrysIndex.forEach(jerry =>  {
-      cells[jerry].classList.add('jerry')
+    jerrysIndex.forEach(jerry => {
+      if (jerry.isAlive) {
+        cells[jerry.currentIndex].classList.add('jerry')
+      }
     })
 
   }
@@ -82,82 +117,79 @@ function init() {
   }
 
 
-
+  
   //* LOGIC TO WORK OUT WHERE JERRY MOVES TO. NEEDS TO BE UPDATED SO THAT IF *ANY* JERRY EQUALS LEFT SIDE OR RIGHT SIDE.
   function jerrysMoves() { 
-    const leftEdge = [0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110, 121, 132, 143]
-    const rightEdge = [10, 21, 32, 43, 54, 65, 76, 87, 98, 109, 120, 131, 142, 153]
+    const leftSide = jerrysIndex[0].currentIndex % width === 0
+    const rightSide = jerrysIndex[jerrysIndex.length - 1].currentIndex % width === 10
   
-    const isOnLeftEdge = leftEdge.some(edge => {
-      return cells[edge].classList.contains('jerry')
-    })
-  
-    const isOnRightEdge = rightEdge.some(edge => {
-      return cells[edge].classList.contains('jerry')
-    })
-  
-    jerrysIndex.forEach(jerry =>  {
-      cells[jerry].classList.remove('jerry')
+    jerrysIndex.forEach(jerry => {
+      if (jerry.isAlive) {
+        cells[jerry.currentIndex].classList.remove('jerry')
+      }
     })
 
-    if (isOnLeftEdge && direction === 'r') {
+    if (leftSide && direction === 'r') {
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 1
+        return { ...jerry, currentIndex: jerry.currentIndex + 1 }
       })
-    
-    } else if (isOnRightEdge && direction === 'r') {
+  
+    } else if (rightSide && direction === 'r') {
       direction = 'l'
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 11
+        return { ...jerry, currentIndex: jerry.currentIndex + 11 }
       })
+    
   
-    } else if (isOnRightEdge && direction === 'l') {
+    } else if (rightSide && direction === 'l') {
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry - 1
+        return { ...jerry, currentIndex: jerry.currentIndex - 1 }
       })
-  
-    } else if (isOnLeftEdge && direction === 'l') {
+    
+    } else if (leftSide && direction === 'l') {
       direction = 'r'
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 11
+        return { ...jerry, currentIndex: jerry.currentIndex + 11 }
       })
-  
+    
+
     } else if (direction === 'r') {
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry + 1
+        return { ...jerry, currentIndex: jerry.currentIndex + 1 }
       })
 
     } else if (direction === 'l') {
       jerrysIndex = jerrysIndex.map(jerry => {
-        return jerry - 1
+        return { ...jerry, currentIndex: jerry.currentIndex - 1 }
       })
-    }
-
-    jerrysIndex.forEach(jerry =>  {
-      cells[jerry].classList.add('jerry')
-    })
   
+    } 
+
+    jerrysIndex.forEach(jerry => {
+      if (jerry.isAlive) {
+        cells[jerry.currentIndex].classList.add('jerry')
+      }
+    })
   } 
   
 
-  //*SOUND FUNCTIONS -> NEEDS STREAMLINING INTO ONE FUNTION AND CALL THE ID FROM HTML POSSIBLY?
-  function playShootClip() {
-    console.log('play clip')
-    mainAudio.src = '../assets/laserfire01trim.wav'
+  //*SOUND FUNCTIONS -> NEEDS STREAMLINING INTO ONE FUNcTION AND CALL THE ID FROM HTML POSSIBLY?
+  function playMainAudio(e) {
+    console.log('main audio')
+    mainAudio.src = `../assets/${e}.wav`
     mainAudio.play()
   }
-
-  function playSplatClip(){
+    
+  function playShootClip(){
+    console.log('shoot')
+    secondAudio.src = '../assets/laserfire01trim.wav'
+    secondAudio.play()
+  }
+  function playSplat() {
     console.log('splat')
-    mainAudio.src = '../assets/splat.wav'
-    mainAudio.play()
+    thirdAudio.src = '../assets/splat.wav'
+    thirdAudio.play()
   }
-
-  // function playRickWin(){
-  //   console.log('rick win sound')
-  //   mainAudio.src = '../assets/and-thats-the-way-news-goes.wav'
-  //   mainAudio.play()
-  // }
 
 
 
@@ -167,21 +199,29 @@ function init() {
     const timerId = setInterval(() => {
 
       if (cells[laserIndex].classList.contains('jerry')) {
-        playSplatClip()
+        playSplat()
         clearInterval(timerId)
         cells[laserIndex].classList.remove('jerry') 
-        jerrysIndex = jerrysIndex.filter(jerry => {
-          return cells[jerry].classList.contains('jerry')
+
+
+        jerrysIndex = jerrysIndex.map(jerry => {
+          if (jerry.currentIndex === laserIndex) {
+            return { ...jerry, isAlive: false }
+          }
+          return jerry
         })
 
         cells[laserIndex].classList.remove('laser')
         playerScore += 100
         scoreDisplay.textContent = playerScore  
         console.log('jerry shot')
+        console.log(aliveJerrys)
+
 
         //* LASER DOESNT GO BEYOND TOP OF BOARD
       } else if (laserIndex < width) {
         cells[laserIndex].classList.remove('laser')
+        clearInterval(timerId)
         //*LASER CONTINUES SHOOTING UP
       } else {
         cells[laserIndex].classList.remove('laser')
@@ -190,53 +230,60 @@ function init() {
       }
     },30) 
   }
-  
-
 
   
+  // function bombs() {
+  //   const aliveJerrys = jerrysIndex.filter(jerry => {
+  //     return jerry.isAlive 
+  //   })
+  //   let bombIndex = aliveJerrys[Math.floor(Math.random() * aliveJerrys.length)]
+  //   const timerIdBomb = setInterval(() => {
+  //     if (cells[bombIndex].classList.contains('jerry')) {
+  //       rickDead = true
+  
+  //     } else if (bombIndex >= (width * 13)) {
+  //       cells[bombIndex].classList.remove('bomb')
+  
+  //     } else {
+  //       cells[bombIndex].classList.remove('bomb')
+  //       bombIndex = bombIndex + 11
+  //       cells[bombIndex].classList.add('bomb')
+  //     }
+      
+  //   },90)
+  
+  // }
+
+
   //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS OR RICK KILLS ALL JERRYS - TRIGGERS PLAYAGAIN FUNCTION
   function startGame() {
     playBtn.disabled = true
     playingNow = true 
-  
+    playMainAudio('wub-a-lub')
+
     const timerIdOne =  setInterval(() => {
-      if (jerrysIndex.length  === 0) {
+      const winOrNo = jerrysIndex.every(jerry => {
+        return !jerry.isAlive
+      })
+      
+      if (cells[rickIndex].classList.contains('jerry') || rickDead) {
+        result = 'died!'
+        playingNow = false
+        playAgain()
+        clearInterval(timerIdOne)
+      
+      } else if (winOrNo === false) {
+        jerrysMoves()
+
+      } else {
         result = 'won!'
         playingNow = false
         // playRickWin()
         playAgain()
         clearInterval(timerIdOne)
-      
-      } else if (jerrysIndex[jerrysIndex.length - 1] < (width * (width + 2))) {
-        jerrysMoves()
-        // setInterval(spawnSwarm, 5000)
-      } else {
-        result = 'died!'
-        playingNow = false
-        playAgain()
-        clearInterval(timerIdOne)
       }
-    }, 400)
+    }, 800)
   }
-
-
-  // //*KEEP SPAWNING ARMIES UNTIL RICK IS DEAD OR GAME IS FINISHED
-  function spawnSwarm() {
-    while (playingNow === true) {
-      
-      
-
-      swarm.forEach(single =>  {
-        cells[single].classList.add('jerry')
-      })
-
-      jerrysMoves(swarm)
-
-      console.log('jerrysIndexnew')
-    }
-      
-  }
-  
 
 
   //*DISPLAYS IF WIN OR LOSE, SCORE AND OPTION TO PLAY AGAIN
@@ -249,9 +296,6 @@ function init() {
     }
   }
 
-  
-  
-  
   
 
   createGrid()

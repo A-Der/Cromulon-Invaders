@@ -62,9 +62,11 @@ body {
     background-position: center;
   }
 
-  .grid div.x {
-    background-color: red;
-    font-size: 30px;
+  .grid div.bomb {
+    background-image: url(../assets/bomb-sprite.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
   }
 
   /* function startGame() {
