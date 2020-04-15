@@ -1,38 +1,88 @@
-body {
-  margin: 0 auto;
-}
-
-.main-flexbox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 header {
   display: flex;
   justify-content: space-evenly;
 }
 
-.top-bar {
+
+body {
+  margin: 0 auto;
+}
+
+.main-flexbox {
+  display: flex;
+  justify-content: space-evenly;
+  background-image: url(../assets/allBackground.png);
+  background-size: cover;
+}
+
+
+
+.currentHS {
+  display: flex;
+  flex-direction: column;
+}
+
+.HSbar {
   background-color: red;
   width: 517px;
-  margin-top: 100px;
+  /* margin-top: 100px; */
   
 }
 
-.grid-wrapper {
-  display: flex;
+.currentHS .HSImage {
+  background-image: url(../assets/rick-commanderHS.png);
+  width: 300px;
+  height: 850px;
+  background-size: 350px;
+  background-repeat: no-repeat;
+  background-color: royalblue;
+}
+
+
+
+.top-bar {
+  background-color: red;
+  width: 517px;
+  /* margin-top: 100px; */
+  
+}
+
+.game-wrapper {
+  flex-basis: 7in;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 850px;
   margin-top: 0;
+} 
+
+.button-rickChar {
+background-image: url(../assets/rick-char.png);
+background-repeat: no-repeat;
+background-position: center;
+background-size: 80px;
+height: 100px;
+width: 80px;
 }
 
-button.rickChar {
-background-color: royalblue;
+.button-mortyChar {
+  background-image: url(../assets/one-true-morty-char.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80px;
+  height: 100px;
+  width: 80px;
+  }
 
-}
+  .button-rickComChar {
+    background-image: url(../assets/rick-commander-char.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50px;
+    height: 100px;
+    width: 80px;
+    }
 
 
 .grid {
@@ -53,8 +103,22 @@ background-color: royalblue;
   height: 40px;
 }
 
-.grid div.rick {
+.grid .rickPlayer {
   background-image: url(../assets/rick-sprite.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.grid .rickComPlayer {
+  background-image: url(../assets/rick-commander-back.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.grid .mortyPlayer {
+  background-image: url(../assets/true-morty-back.png);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
