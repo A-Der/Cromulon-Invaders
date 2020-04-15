@@ -8,6 +8,11 @@ body {
   align-items: center;
 }
 
+header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .top-bar {
   background-color: red;
   width: 517px;
@@ -24,21 +29,28 @@ body {
   margin-top: 0;
 }
 
+button.rickChar {
+background-color: royalblue;
+
+}
+
 
 .grid {
   display: flex;
-  background-color: pink;
+  background-image: url(../assets/background.gif);
+  background-repeat: no-repeat;
+  background-size: cover;
   align-items: center;
   flex-wrap: wrap;
   justify-content: center;
-  height: 705px;
+  height: 798px;
   width: 517px;
 }
 
 .grid div {
   border: 1px solid black;
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
 }
 
 .grid div.rick {
@@ -47,9 +59,16 @@ body {
   background-size: contain;
   background-position: center;
 }
+
+.grid div.pickle-rick {
+  background-image: url(../assets/pickle-rick.gif);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
   
   .grid div.jerry {
-    background-image: url(../assets/alien-jerry-sprite.png);
+    background-image: url(../assets/jerry-sprite.gif);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -63,27 +82,30 @@ body {
   }
 
   .grid div.bomb {
-    background-image: url(../assets/bomb-sprite.png);
+    background-image: url(../assets/bomb.gif);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
   }
 
-  .grid div.explosion {
-    background-image: url(../assets/explosion.gif);
+  .grid div.jerry-explosion {
+    background-image: url(../assets/jerry-explosion.gif);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
   }
-  /* function startGame() {
-    const timerId = setInterval(() => {
-      for (let i = 0; i < 7 && i < 16; i++) {
-        for (let j = 9; j < 16; j++) {
-          cells[i].classList.add('jerry')
-          cells[j].classList.add('jerry')
-        }
-      } 
-      
-    }, 2000)
-  
-  } */
+
+
+  .grid div.rick-explosion {
+    background-image: url(../assets/rick-explosion.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+
+  .grid div.pickle-explosion {
+    background-image: url(../assets/pickle-explosion.gif);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }

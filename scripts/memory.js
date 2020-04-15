@@ -27,6 +27,7 @@
       // const swarm = Array.from(jerrysIndex)
       let direction = 'r'
       let playerScore = 0
+      let highScore = 0
       let playingNow = false
       let result = 'won'
       playBtn.disabled = false
@@ -324,13 +325,14 @@ function init() {
 
   //*GRID VARIABLES
   const width = 11
-  const cellCount = width * (width + 3)
+  const cellCount = width * (width + 4)
 
 
 
 
   //* GAME VARIABLES
-  let rickIndex = 148
+  let rickIndex = 159
+  let rickDead = false
   const armyIndex = [
     { currentIndex: 0, isAlive: true },
     { currentIndex: 1, isAlive: true },
@@ -365,6 +367,7 @@ function init() {
   let playerScore = 0
   let playingNow = false
   let result = 'won'
+  let laserCount = 0
   playBtn.disabled = false
   
   // Array.prototype.addJerry = function() {
@@ -404,22 +407,22 @@ function init() {
     if (playingNow === true) {
       switch (event.keyCode) {
         case 37:
-          if (rickIndex > 143) {
+          if (rickIndex > 154) {
             cells[rickIndex].classList.remove('rick')
             cells[rickIndex--]
             cells[rickIndex].classList.add('rick')
           }
           break
         case 39:
-          if (rickIndex < 153){
+          if (rickIndex < 164){
             cells[rickIndex].classList.remove('rick')
             cells[rickIndex++]
             cells[rickIndex].classList.add('rick')
           }
           break
         case 32:
-          playShootClip()
           laser()
+          laserCount = laserCount + 1
       }
     }
   }
@@ -430,7 +433,14 @@ function init() {
   function jerrysMoves() { 
     const leftSide = jerrysIndex[0].currentIndex % width === 0
     const rightSide = jerrysIndex[jerrysIndex.length - 1].currentIndex % width === 10
-  
+    
+    jerrysIndex.forEach(jerry => {
+      if (!jerry.isAlive) {
+        cells[jerry.currentIndex].classList.remove('jerry-explosion')
+        cells[jerry.currentIndex].classList.remove('pickle-explosion')
+      }
+    })
+
     jerrysIndex.forEach(jerry => {
       if (jerry.isAlive) {
         cells[jerry.currentIndex].classList.remove('jerry')
@@ -488,14 +498,14 @@ function init() {
     mainAudio.play()
   }
     
-  function playShootClip(){
+  function playSecondAudio(e){
     console.log('shoot')
-    secondAudio.src = '../assets/laserfire01trim.wav'
+    secondAudio.src = `../assets/${e}.wav`
     secondAudio.play()
   }
-  function playSplat() {
+  function playThirdAudio(e) {
     console.log('splat')
-    thirdAudio.src = '../assets/splat.wav'
+    thirdAudio.src = `../assets/${e}.wav`
     thirdAudio.play()
   }
 
@@ -503,45 +513,119 @@ function init() {
 
   //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
-    let laserIndex = rickIndex - width
-    const timerId = setInterval(() => {
 
-      if (cells[laserIndex].classList.contains('jerry')) {
-        playSplat()
-        clearInterval(timerId)
-        cells[laserIndex].classList.remove('jerry') 
+    if (laserCount >= 6){
+      laserCount = 0
+
+      playMainAudio('pickle-rick')
+      let laserIndex = rickIndex - width
+      const timerId = setInterval(() => {
+      
+        if (cells[laserIndex].classList.contains('jerry')) {
+          playThirdAudio('killJ')
+          clearInterval(timerId)
+          cells[laserIndex].classList.remove('jerry')
+          cells[laserIndex + 1].classList.remove('jerry')
+          cells[laserIndex + 1].classList.add('pickle-explosion')
+          cells[laserIndex].classList.add('pickle-explosion') 
+          
 
 
-        jerrysIndex = jerrysIndex.map(jerry => {
-          if (jerry.currentIndex === laserIndex) {
-            return { ...jerry, isAlive: false }
-          }
-          return jerry
-        })
+          jerrysIndex = jerrysIndex.map(jerry => {
+            if (jerry.currentIndex === laserIndex) {
+              return { ...jerry, isAlive: false }
+            }
+            return jerry
+          })
 
-        cells[laserIndex].classList.remove('laser')
-        playerScore += 100
-        scoreDisplay.textContent = playerScore  
-        console.log('jerry shot')
+          cells[laserIndex].classList.remove('pickle-rick')
+          playerScore += 100
+          scoreDisplay.textContent = playerScore  
+          console.log('jerry shot')
+
 
         //* LASER DOESNT GO BEYOND TOP OF BOARD
-      } else if (laserIndex < width) {
-        cells[laserIndex].classList.remove('laser')
+        } else if (laserIndex < width) {
+          cells[laserIndex].classList.remove('pickle-rick')
         //*LASER CONTINUES SHOOTING UP
-      } else {
-        cells[laserIndex].classList.remove('laser')
-        laserIndex = laserIndex - 11
-        cells[laserIndex].classList.add('laser')
-      }
-    },30) 
+        } else {
+          cells[laserIndex].classList.remove('pickle-rick')
+          laserIndex = laserIndex - 11
+          cells[laserIndex].classList.add('pickle-rick')
+        }
+      },100) 
+
+    } else {
+
+      playSecondAudio('laserfire01trim')
+      let laserIndex = rickIndex - width
+      const timerId = setInterval(() => {
+      
+        if (cells[laserIndex].classList.contains('jerry')) {
+          playThirdAudio('killJ')
+          clearInterval(timerId)
+          cells[laserIndex].classList.remove('jerry')
+          cells[laserIndex].classList.add('jerry-explosion') 
+
+
+          jerrysIndex = jerrysIndex.map(jerry => {
+            if (jerry.currentIndex === laserIndex) {
+              return { ...jerry, isAlive: false }
+            }
+            return jerry
+          })
+
+          cells[laserIndex].classList.remove('laser')
+          playerScore += 100
+          scoreDisplay.textContent = playerScore  
+          console.log('jerry shot')
+
+
+        //* LASER DOESNT GO BEYOND TOP OF BOARD
+        } else if (laserIndex < width) {
+          cells[laserIndex].classList.remove('laser')
+
+        //*LASER CONTINUES SHOOTING UP
+        } else {
+          cells[laserIndex].classList.remove('laser')
+          laserIndex = laserIndex - 11
+          cells[laserIndex].classList.add('laser')
+
+        }
+      },30) 
+    }
   }
 
+  //*JERRYS BOMBS
+  function bombs() {
+    const aliveJerrys = jerrysIndex.filter(jerry => {
+      return jerry.isAlive 
+    })
+    let bombIndex = aliveJerrys[Math.floor(Math.random() * aliveJerrys.length)].currentIndex
+    console.log(cells[bombIndex])
+   
+    const timerIdBomb = setInterval(() => {
+      if (cells[bombIndex].classList.contains('rick')) {
+        cells[rickIndex].classList.remove('rick')
+        cells[bombIndex].classList.remove('bomb')
+        playThirdAudio('bomb')
+        console.log('hit rick')
+        rickDead = true
+        clearInterval(timerIdBomb)
   
+      } else if (bombIndex >= (width * 14)) {
+        cells[bombIndex].classList.remove('bomb')
+        clearInterval(timerIdBomb)
 
+      } else {
+        cells[bombIndex].classList.remove('bomb')
+        bombIndex = bombIndex + 11
+        cells[bombIndex].classList.add('bomb')
+      }
+      
+    },100)
   
-  //  function bombs() {
-  //    let bombIndex = 
-  //  }
+  }
 
 
   //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS OR RICK KILLS ALL JERRYS - TRIGGERS PLAYAGAIN FUNCTION
@@ -550,48 +634,36 @@ function init() {
     playingNow = true 
     playMainAudio('wub-a-lub')
 
+
     const timerIdOne =  setInterval(() => {
       const winOrNo = jerrysIndex.every(jerry => {
         return !jerry.isAlive
       })
       
-      if (cells[rickIndex].classList.contains('jerry')) {
+      if (cells[rickIndex].classList.contains('jerry') || rickDead) {
+        setTimeout(playMainAudio('goddamn'), 1000)
+        cells[rickIndex].classList.remove('rick')
+        cells[rickIndex].classList.add('rick-explosion')
+        
         result = 'died!'
         playingNow = false
-        playAgain()
+        
         clearInterval(timerIdOne)
+        setTimeout(playAgain, 3000)
       
       } else if (winOrNo === false) {
         jerrysMoves()
-
+        bombs()
+        
       } else {
         result = 'won!'
         playingNow = false
-        // playRickWin()
-        playAgain()
+        playMainAudio('and-thats-the-way-news-goes')
+        setTimeout(playAgain, 3000)
         clearInterval(timerIdOne)
       }
-    }, 800)
+    }, 600)
   }
-
-
-  // //*KEEP SPAWNING ARMIES UNTIL RICK IS DEAD OR GAME IS FINISHED
-  // function spawnSwarm() {
-  //   while (playingNow === true) {
-      
-      
-
-  //     swarm.forEach(single =>  {
-  //       cells[single].classList.add('jerry')
-  //     })
-
-  //     jerrysMoves(swarm)
-
-  //     console.log('jerrysIndexnew')
-  //   }
-      
-  // }
-  
 
 
   //*DISPLAYS IF WIN OR LOSE, SCORE AND OPTION TO PLAY AGAIN
@@ -604,9 +676,6 @@ function init() {
     }
   }
 
-  
-  
-  
   
 
   createGrid()
