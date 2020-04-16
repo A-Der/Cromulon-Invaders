@@ -3,9 +3,6 @@ function init() {
 
   //* DOM ELEMENTS
   const grid = document.querySelector('.grid')
-  // const playBtn = document.querySelector('.play-button')
-  
-  //* select all buttons and put together, change which class function
   const playR = document.querySelector('.play-button-rick')
   const playM = document.querySelector('.play-button-morty')
   const playRC = document.querySelector('.play-button-rickCom')
@@ -16,6 +13,9 @@ function init() {
   const mainAudio = document.querySelector('#main')
   const secondAudio = document.querySelector('#secondary')
   const thirdAudio = document.querySelector('#third')
+  const fourthAudio = document.querySelector('#fourth')
+  const backgroundAudio = document.querySelector('#background-audio')
+
   
 
 
@@ -76,6 +76,11 @@ function init() {
   const rightEdge = [11, 23, 35, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167, 179, 191, 203, 215, 227]
   let jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
   let playerClass = ''
+  let HSImageClass = ''
+  let audioIntroClass = ''
+  let audioExitClass = ''
+  let audioWeaponClass = ''
+  let imageWeaponClass = ''
   let direction = 're'
   let playerScore = 0
   let HSscore = 0
@@ -100,7 +105,6 @@ function init() {
   
 
 
-
   //* FUNCTIONS
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
@@ -108,6 +112,8 @@ function init() {
       // cell.textContent = i
       grid.appendChild(cell)
       cells.push(cell)
+
+      
     }
   }
   
@@ -209,7 +215,7 @@ function init() {
   } 
   
 
-  //*SOUND FUNCTIONS -> NEEDS STREAMLINING INTO ONE FUNcTION AND CALL THE ID FROM HTML POSSIBLY?
+  //*SOUND FUNCTIONS------------------------------------------------------------------------
   function playMainAudio(e) {
     console.log('main audio')
     mainAudio.src = `../assets/${e}.wav`
@@ -226,11 +232,23 @@ function init() {
     thirdAudio.src = `../assets/${e}.wav`
     thirdAudio.play()
   }
-  //*random sounds generator--------------------------------------------------------------
 
-  function randomSounds() {
+  function playFourthAudio(e){
+    console.log('pickle')
+    fourthAudio.src = `../assets/${e}.wav`
+    fourthAudio.play()
+  }
+
+  function playBackgroundAudio(){
+    console.log('background music')
+    backgroundAudio.src = '../assets/background-music.wav'
+    backgroundAudio.play()
+  }
+  //*RANDOM SOUNDS--------------------------------------------------------------
+
+  function jerrySound() {
     if (cells[width].classList.contains('jerry')) {
-      playMainAudio('show-me')
+      setTimeout(playMainAudio('show-me'), 3000)
     }
   }
  
@@ -238,12 +256,10 @@ function init() {
 
   //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
-
-    if (laserCount >= 14){
+    if (laserCount === 20){
       laserCount = 0
 
-
-      playMainAudio('pickle-rick')
+      playFourthAudio('pickle-rick')
       let laserIndex = rickIndex - width
       const timerId = setInterval(() => {
         if (rickDead) {
@@ -290,8 +306,7 @@ function init() {
       },100) 
 
     } else {
-
-      playSecondAudio('laserfire01trim')
+      playSecondAudio(audioWeaponClass)
       let laserIndex = rickIndex - width
       const timerId = setInterval(() => {
         if (rickDead) {
@@ -302,7 +317,6 @@ function init() {
           cells[laserIndex].classList.remove('jerry')
           cells[laserIndex].classList.add('jerry-explosion') 
 
-
           jerrysIndex = jerrysIndex.map(jerry => {
             if (jerry.currentIndex === laserIndex) {
               return { ...jerry, isAlive: false }
@@ -310,7 +324,7 @@ function init() {
             return jerry
           })
 
-          cells[laserIndex].classList.remove('laser')
+          cells[laserIndex].classList.remove(imageWeaponClass)
           playerScore += 100
           scoreDisplay.textContent = playerScore  
           console.log('jerry shot')
@@ -318,14 +332,13 @@ function init() {
 
         //* LASER DOESNT GO BEYOND TOP OF BOARD
         } else if (laserIndex < width) {
-          cells[laserIndex].classList.remove('laser')
+          cells[laserIndex].classList.remove(imageWeaponClass)
 
         //*LASER CONTINUES SHOOTING UP
         } else {
-          cells[laserIndex].classList.remove('laser')
+          cells[laserIndex].classList.remove(imageWeaponClass)
           laserIndex = laserIndex - 12
-          cells[laserIndex].classList.add('laser')
-
+          cells[laserIndex].classList.add(imageWeaponClass)
         }
       },30) 
     }
@@ -336,17 +349,12 @@ function init() {
     const aliveJerrys = jerrysIndex.filter(jerry => {
       return jerry.isAlive 
     })
-    
     let bombIndex = aliveJerrys[Math.floor(Math.random() * aliveJerrys.length)].currentIndex
-
-   
     const timerIdBomb = setInterval(() => {
   
       if (cells[bombIndex].classList.contains(playerClass) || cells[rickIndex].classList.contains('jerry')) {
         rickDead = true
-     
         console.log('hit rick')
-        
         clearInterval(timerIdBomb)
   
       } else if (bombIndex >= (cellCount - width) ) {
@@ -359,28 +367,41 @@ function init() {
     
         cells[bombIndex].classList.add('bomb')
       }
-      
     },100)
-  
   }
   
 
-  //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS OR RICK KILLS ALL JERRYS - TRIGGERS PLAYAGAIN FUNCTION
+  //* FUNCTION TO CHANGE CHARACTERS IMAGES/AUDIOS/WEAPONS ACCORDING TO CHOICE AND START GAME-----------------
   function whichClass(){
     document.querySelector('.play-button-rickCom').onclick = () => {
       playerClass = 'rickComPlayer'
+      HSImageClass = 'HSrickCom'
+      audioIntroClass = 'ricki-tiki'
+      audioExitClass = 'lick-my-balls'
+      audioWeaponClass = 'laserRickCom'
+      imageWeaponClass = 'rickComWeapon'
       startGame()
       console.log('rickComChar')
     }
 
     document.querySelector('.play-button-rick').onclick = () => { 
       playerClass = 'rickPlayer'
+      HSImageClass = 'HSrick'
+      audioIntroClass = 'wub-a-lub'
+      audioExitClass = 'and-thats-the-way-the-news-goes'
+      audioWeaponClass = 'laserRick'
+      imageWeaponClass = 'rickWeapon'
       startGame()
       console.log('rickChar')
     }
       
     document.querySelector('.play-button-morty').onclick = () => {
       playerClass = 'mortyPlayer'
+      HSImageClass = 'HSmorty'
+      audioIntroClass = 'one-true-morty'
+      audioExitClass = 'i-love-morty'
+      audioWeaponClass = 'mortyLaser'
+      imageWeaponClass = 'mortyWeapon'
       startGame()
       console.log('mortyChar')
     }
@@ -388,11 +409,14 @@ function init() {
   
     
   
-
+  //*STARTS GAME WITH SELECTED CHARACTER AND DISBLES BUTTONS--------------------------------
   function startGame() {
-    // playBtn.disabled = true
+    playBackgroundAudio('background-music')
+    playR.disabled = true
+    playM.disabled = true
+    playRC.disabled = true
     playingNow = true 
-    playMainAudio('wub-a-lub')
+    playMainAudio(audioIntroClass)
    
     // randomSounds()
     cells[rickIndex].classList.add(playerClass)
@@ -424,12 +448,12 @@ function init() {
       } else if (winOrNo === false) {
         jerrysMoves()
         bombs()
-        randomSounds()
+        jerrySound()
         
       } else {
         result = 'won!'
         playingNow = false
-        playMainAudio('and-thats-the-way-news-goes')
+        playMainAudio(audioExitClass)
         setTimeout(playAgain, 3000)
         clearInterval(timerIdOne)
         highScore()
@@ -450,11 +474,14 @@ function init() {
 
   //*Update high score------------------------------------------
   function highScore() {
-    if (playerScore > HSscore )
-      HSImage.classList.remove('HSImage')
-    HSImage.classList.add('HSrickCom')
-    HSscore = playerScore
-    HSscoreDisplay.textContent = HSscore
+    if (playerScore > HSscore ) {
+      HSImage.classList.remove('HSrick')
+      HSImage.classList.remove('HSrickCom')
+      HSImage.classList.remove('HSmorty')
+      HSImage.classList.add(HSImageClass)
+      HSscore = playerScore
+      HSscoreDisplay.textContent = HSscore
+    }
   }
 
 
@@ -467,12 +494,19 @@ function init() {
     rickIndex = 222
     rickDead = false
     playerClass = ''
+    HSImageClass = ''
+    audioIntroClass = ''
+    audioExitClass = ''
     jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
     direction = 'r'
     playerScore = 0
     playingNow = false
     result = 'won'
     laserCount = 0
+    playR.disabled = false
+    playM.disabled = false
+    playRC.disabled = false
+    
     // playBtn.disabled = false
 
 
@@ -489,6 +523,7 @@ function init() {
 
 
 
+  
 
   createGrid()
 
@@ -496,6 +531,10 @@ function init() {
   playR.addEventListener('mouseenter', whichClass)
   playM.addEventListener('mouseenter', whichClass)
   playRC.addEventListener('mouseenter', whichClass)
+
+  playR.addEventListener('click', playBackgroundAudio)
+  playM.addEventListener('click', playBackgroundAudio)
+  playRC.addEventListener('click', playBackgroundAudio)
   
   document.addEventListener('keydown', handleKeyDown)
 
