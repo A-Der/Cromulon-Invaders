@@ -16,16 +16,10 @@ function init() {
   const fourthAudio = document.querySelector('#fourth')
   const backgroundAudio = document.querySelector('#background-audio')
 
-  
-
-
   //*GRID VARIABLES
   const width = 12
   const height = 19
   const cellCount = width * height
-
-
-
 
   //* GAME VARIABLES
   let rickIndex = 222
@@ -87,37 +81,38 @@ function init() {
   let playingNow = false
   let result = 'won'
   let laserCount = 0
-
   playR.disabled = false
   playM.disabled = false
   playRC.disabled = false
-  
-  // Array.prototype.addJerry = function() {
-  //   this.forEach(i => {
-  //     cells[i].classList.add('Jerry')
-  //   })
-  // }
 
-  // jerrysIndex.forEach(jerry =>  {
-  //   cells[jerry].classList.add('jerry')
-  // })
-  // const laserIndex = rickIndex - width
-  
+  //*ADD AND REMOVE ALIVE JERRYS-----------------------------------------------------
+  function addJerrys() {
+    jerrysIndex.forEach(jerry => {
+      if (jerry.isAlive) {
+        cells[jerry.currentIndex].classList.add('jerry')
+      }
+    })
+  }
+
+  function removeJerrys() {
+    jerrysIndex.forEach(jerry => {
+      if (jerry.isAlive) {
+        cells[jerry.currentIndex].classList.remove('jerry')
+      }
+    })
+  }
 
 
   //* FUNCTIONS
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      // cell.textContent = i
       grid.appendChild(cell)
       cells.push(cell)
-
-      
     }
   }
   
-  //*KEYBOARD CONTROLS -> MOVE RICK AND SHOOT
+  //*KEYBOARD CONTROLS -> MOVE RICK AND SHOOT--------------------------------------
   function handleKeyDown(event) {
     event.preventDefault()
     if (playingNow && rickDead === false) {
@@ -159,13 +154,8 @@ function init() {
       cells[jerry.currentIndex].classList.remove('jerry-explosion')
     })
 
-    jerrysIndex.forEach(jerry => {
-      if (jerry.isAlive) {
-        cells[jerry.currentIndex].classList.remove('jerry')
-      }
-    })
+    removeJerrys()
     
-
     if (isOnLeftEdge && direction === 're') {
       console.log('on left going right + 1')
       direction = 'r'
@@ -180,7 +170,6 @@ function init() {
         return { ...jerry, currentIndex: jerry.currentIndex + 12 }
       })
     
-  
     } else if (isOnRightEdge && direction === 'l') {
       console.log('on right goingleft')
       jerrysIndex = jerrysIndex.map(jerry => {
@@ -204,14 +193,9 @@ function init() {
       jerrysIndex = jerrysIndex.map(jerry => {
         return { ...jerry, currentIndex: jerry.currentIndex - 1 }
       })
-  
     } 
 
-    jerrysIndex.forEach(jerry => {
-      if (jerry.isAlive) {
-        cells[jerry.currentIndex].classList.add('jerry')
-      }
-    })
+    addJerrys()
   } 
   
 
@@ -244,19 +228,17 @@ function init() {
     backgroundAudio.src = '../assets/background-music.wav'
     backgroundAudio.play()
   }
-  //*RANDOM SOUNDS--------------------------------------------------------------
 
+  //* JERRYS SOUND--------------------------------------------------------------
   function jerrySound() {
     if (cells[width].classList.contains('jerry')) {
       setTimeout(playMainAudio('show-me'), 3000)
     }
   }
- 
-
 
   //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
-    if (laserCount === 20){
+    if (laserCount === 13){
       laserCount = 0
 
       playFourthAudio('pickle-rick')
@@ -266,7 +248,7 @@ function init() {
           clearInterval(timerId)
       
         } else if (cells[laserIndex].classList.contains('jerry')) {
-          playThirdAudio('killJ')
+          playThirdAudio('pickleKillJ')
           clearInterval(timerId)
           cells[laserIndex].classList.remove('jerry')
           cells[laserIndex + 1].classList.remove('jerry')
@@ -329,7 +311,6 @@ function init() {
           scoreDisplay.textContent = playerScore  
           console.log('jerry shot')
 
-
         //* LASER DOESNT GO BEYOND TOP OF BOARD
         } else if (laserIndex < width) {
           cells[laserIndex].classList.remove(imageWeaponClass)
@@ -340,11 +321,11 @@ function init() {
           laserIndex = laserIndex - 12
           cells[laserIndex].classList.add(imageWeaponClass)
         }
-      },30) 
+      },40) 
     }
   }
 
-  //*JERRYS BOMBS-----------------------------------------------------------------
+  //* JERRYS BOMBS-----------------------------------------------------------------
   function bombs() {
     const aliveJerrys = jerrysIndex.filter(jerry => {
       return jerry.isAlive 
@@ -367,10 +348,9 @@ function init() {
     
         cells[bombIndex].classList.add('bomb')
       }
-    },100)
+    },120)
   }
   
-
   //* FUNCTION TO CHANGE CHARACTERS IMAGES/AUDIOS/WEAPONS ACCORDING TO CHOICE AND START GAME-----------------
   function whichClass(){
     document.querySelector('.play-button-rickCom').onclick = () => {
@@ -409,7 +389,7 @@ function init() {
   
     
   
-  //*STARTS GAME WITH SELECTED CHARACTER AND DISBLES BUTTONS--------------------------------
+  //* STARTS GAME WITH SELECTED CHARACTER AND DISBLES BUTTONS--------------------------------
   function startGame() {
     playBackgroundAudio('background-music')
     playR.disabled = true
@@ -418,13 +398,8 @@ function init() {
     playingNow = true 
     playMainAudio(audioIntroClass)
    
-    // randomSounds()
     cells[rickIndex].classList.add(playerClass)
-    jerrysIndex.forEach(jerry => {
-      if (jerry.isAlive) {
-        cells[jerry.currentIndex].classList.add('jerry')
-      }
-    })
+    addJerrys()
 
     const timerIdOne =  setInterval(() => {
       const winOrNo = jerrysIndex.every(jerry => {
@@ -436,13 +411,11 @@ function init() {
         cells[rickIndex].classList.remove(playerClass)
         cells[rickIndex].classList.add('rick-explosion')
         highScore()
-
-        
         setTimeout(playMainAudio('goddamn'), 1000)
         result = 'died!'
         playingNow = false
-        
         clearInterval(timerIdOne)
+
         setTimeout(playAgain, 3000)
       
       } else if (winOrNo === false) {
@@ -472,7 +445,7 @@ function init() {
     }
   }
 
-  //*Update high score------------------------------------------
+  //*UPDATE HIGHSCORE---------------------------------------------------------
   function highScore() {
     if (playerScore > HSscore ) {
       HSImage.classList.remove('HSrick')
@@ -493,12 +466,13 @@ function init() {
 
     rickIndex = 222
     rickDead = false
+    jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
     playerClass = ''
-    HSImageClass = ''
     audioIntroClass = ''
     audioExitClass = ''
-    jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
-    direction = 'r'
+    audioWeaponClass = ''
+    imageWeaponClass = ''
+    direction = 're'
     playerScore = 0
     playingNow = false
     result = 'won'
@@ -506,28 +480,12 @@ function init() {
     playR.disabled = false
     playM.disabled = false
     playRC.disabled = false
-    
-    // playBtn.disabled = false
-
-
-    // cells[rickIndex].classList.add(playerClass)
-    // jerrysIndex.forEach(jerry => {
-    //   if (jerry.isAlive) {
-    //     cells[jerry.currentIndex].classList.add('jerry')
-    //   }
-    // })
   }
 
 
-
-
-
-
-  
-
   createGrid()
 
-  //*EVENT LISTENERS
+  //*EVENT LISTENERS---------------------------------------
   playR.addEventListener('mouseenter', whichClass)
   playM.addEventListener('mouseenter', whichClass)
   playRC.addEventListener('mouseenter', whichClass)
