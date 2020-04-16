@@ -4,12 +4,15 @@ function init() {
   //* DOM ELEMENTS
   const grid = document.querySelector('.grid')
   // const playBtn = document.querySelector('.play-button')
-  const playR = document.querySelector('.button-rickChar')
-  const playM = document.querySelector('.button-mortyChar')
-  const playRC = document.querySelector('.button-rickComChar')
+  
+  //* select all buttons and put together, change which class function
+  const playR = document.querySelector('.play-button-rick')
+  const playM = document.querySelector('.play-button-morty')
+  const playRC = document.querySelector('.play-button-rickCom')
   const cells = []
   const scoreDisplay = document.querySelector('#score')
   const HSscoreDisplay = document.querySelector('#HSscore')
+  const HSImage = document.querySelector('.HSImage')
   const mainAudio = document.querySelector('#main')
   const secondAudio = document.querySelector('#secondary')
   const thirdAudio = document.querySelector('#third')
@@ -79,6 +82,7 @@ function init() {
   let playingNow = false
   let result = 'won'
   let laserCount = 0
+
   playR.disabled = false
   playM.disabled = false
   playRC.disabled = false
@@ -101,7 +105,7 @@ function init() {
   function createGrid() {
     for (let i = 0; i < cellCount; i++) {
       const cell = document.createElement('div')
-      cell.textContent = i
+      // cell.textContent = i
       grid.appendChild(cell)
       cells.push(cell)
     }
@@ -235,7 +239,7 @@ function init() {
   //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
 
-    if (laserCount >= 6){
+    if (laserCount >= 14){
       laserCount = 0
 
 
@@ -363,19 +367,19 @@ function init() {
 
   //* FUNCTION TO  START GAME TO MOVE JERRY UNTIL HE REACHES RICKS OR RICK KILLS ALL JERRYS - TRIGGERS PLAYAGAIN FUNCTION
   function whichClass(){
-    document.querySelector('.button-rickComChar').onclick = () => {
+    document.querySelector('.play-button-rickCom').onclick = () => {
       playerClass = 'rickComPlayer'
       startGame()
       console.log('rickComChar')
     }
 
-    document.querySelector('.button-rickChar').onclick = () => { 
+    document.querySelector('.play-button-rick').onclick = () => { 
       playerClass = 'rickPlayer'
       startGame()
       console.log('rickChar')
     }
       
-    document.querySelector('.button-mortyChar').onclick = () => {
+    document.querySelector('.play-button-morty').onclick = () => {
       playerClass = 'mortyPlayer'
       startGame()
       console.log('mortyChar')
@@ -389,6 +393,7 @@ function init() {
     // playBtn.disabled = true
     playingNow = true 
     playMainAudio('wub-a-lub')
+   
     // randomSounds()
     cells[rickIndex].classList.add(playerClass)
     jerrysIndex.forEach(jerry => {
@@ -406,8 +411,9 @@ function init() {
         playThirdAudio('bomb')
         cells[rickIndex].classList.remove(playerClass)
         cells[rickIndex].classList.add('rick-explosion')
-
         highScore()
+
+        
         setTimeout(playMainAudio('goddamn'), 1000)
         result = 'died!'
         playingNow = false
@@ -426,6 +432,7 @@ function init() {
         playMainAudio('and-thats-the-way-news-goes')
         setTimeout(playAgain, 3000)
         clearInterval(timerIdOne)
+        highScore()
       }
     }, 600)
   }
@@ -444,7 +451,9 @@ function init() {
   //*Update high score------------------------------------------
   function highScore() {
     if (playerScore > HSscore )
-      HSscore = playerScore
+      HSImage.classList.remove('HSImage')
+    HSImage.classList.add('HSrickCom')
+    HSscore = playerScore
     HSscoreDisplay.textContent = HSscore
   }
 
@@ -467,12 +476,12 @@ function init() {
     // playBtn.disabled = false
 
 
-    cells[rickIndex].classList.add(playerClass)
-    jerrysIndex.forEach(jerry => {
-      if (jerry.isAlive) {
-        cells[jerry.currentIndex].classList.add('jerry')
-      }
-    })
+    // cells[rickIndex].classList.add(playerClass)
+    // jerrysIndex.forEach(jerry => {
+    //   if (jerry.isAlive) {
+    //     cells[jerry.currentIndex].classList.add('jerry')
+    //   }
+    // })
   }
 
 

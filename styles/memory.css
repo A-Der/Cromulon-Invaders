@@ -1,12 +1,17 @@
 
+header {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
 body {
   margin: 0 auto;
-  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .main-flexbox {
   display: flex;
-  /* justify-content: space-evenly; */
+  justify-content: space-evenly;
   background-image: url(../assets/allBackground.png);
   background-size: cover;
 }
@@ -16,7 +21,6 @@ body {
 .currentHS {
   display: flex;
   flex-direction: column;
-  align-items:  center;
 }
 
 .HSbar {
@@ -27,13 +31,11 @@ body {
 }
 
 .HSImage {
-  /* background-color: royalblue; */
+  background-color: royalblue;
   width: 360px;
   height: 850px;
   background-size: 350px;
   background-repeat: no-repeat;
-  margin-top: 3px;
-  /* padding-right: 30px; */
 }
 
  .HSrickCom {
@@ -42,111 +44,53 @@ body {
   height: 850px;
   background-size: 350px;
   background-repeat: no-repeat;
-}
-
-.HSrick {
-  background-image: url(../assets/rick-HS.png);
-  width: 360px;
-  height: 850px;
-  background-size: 350px;
-  background-repeat: no-repeat;
-}
-
-.HSmorty {
-  background-image: url(../assets/true-mortyHS.png);
-  width: 360px;
-  height: 850px;
-  background-size: 350px;
-  background-repeat: no-repeat;
-}
-
-.champ {
-  /* background-color: white; */
-  font-size: 30px;
-  color: green;
-  margin:0;
-  text-shadow: 1px 1px 30px purple, 0 0 25px blue, 0 0 5px darkblue;
+ 
 }
 
 
-.game-score-bar {
-  display: flex;
-  /* justify-items: space-between; */
+
+
+.top-bar {
   background-color: red;
   width: 517px;
   /* margin-top: 100px; */
-}
-
-#score { 
-  font-size: 25px;
-  /* background-color: violet; */
-  padding-left: 160px;
-}
-
-#HSscore { 
-  font-size: 25px;
-  /* background-color: violet; */
-  padding-left: 160px;
   
 }
 
 .game-wrapper {
-  flex-basis: 5in;
+  flex-basis: 10in;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   height: 850px;
-  margin-right: 200px;
-  margin-left: 30px;
- 
+  margin-top: 0;
 } 
 
-.choosePlayer {
-  font-size: 20px;
-  display: flex;
-  flex-direction: column;
-  /* background-color: sandybrown; */
-  margin-top: 10px;
-  align-items: center;
-}
-
 .button, #rickChar {
-  background-color: transparent;
   background-image: url(../assets/rick-char.png);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 120px;
-  height: 160px;
-  width: 130px;
-  margin-top: 85px;
-  border: none;
-  outline: none;
+  background-size: 80px;
+  height: 100px;
+  width: 80px;
   }
   
   .button, #mortyChar {
-    background-color: transparent;
     background-image: url(../assets/one-true-morty-char.png);
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 115px;
-    height: 160px;
-    width: 130px;
-    margin-top: 85px;
-    border: none;
-    outline: none;
+    background-size: 80px;
+    height: 100px;
+    width: 80px;
     }
   
     .button, #rickComChar {
-      background-color: transparent;
       background-image: url(../assets/rick-commander-char.png);
       background-repeat: no-repeat;
       background-position: center;
-      background-size: 80px;
-      height: 170px;
-      width: 130px;
-      margin-top: 85px;
-      border: none;
-      outline: none;
+      background-size: 50px;
+      height: 100px;
+      width: 80px;
       }
 
 /* .button-rickChar {
@@ -187,13 +131,10 @@ width: 80px;
   justify-content: center;
   height: 798px;
   width: 517px;
-  border: blue 1px solid;
-  box-shadow: 50px, 50px, blue;
-  
 }
 
 .grid div {
-  /* border: 1px solid black; */
+  border: 1px solid black;
   width: 40px;
   height: 40px;
 }
