@@ -81,6 +81,7 @@ function init() {
   let playingNow = false
   let result = 'won'
   let laserCount = 0
+  let speed = 0
   playR.disabled = false
   playM.disabled = false
   playRC.disabled = false
@@ -360,6 +361,7 @@ function init() {
       audioExitClass = 'lick-my-balls'
       audioWeaponClass = 'laserRickCom'
       imageWeaponClass = 'rickComWeapon'
+      speed = 400
       startGame()
       console.log('rickComChar')
     }
@@ -371,6 +373,7 @@ function init() {
       audioExitClass = 'and-thats-the-way-the-news-goes'
       audioWeaponClass = 'laserRick'
       imageWeaponClass = 'rickWeapon'
+      speed = 600
       startGame()
       console.log('rickChar')
     }
@@ -382,12 +385,11 @@ function init() {
       audioExitClass = 'i-love-morty'
       audioWeaponClass = 'mortyLaser'
       imageWeaponClass = 'mortyWeapon'
+      speed = 800
       startGame()
       console.log('mortyChar')
     }
   }
-  
-    
   
   //* STARTS GAME WITH SELECTED CHARACTER AND DISBLES BUTTONS--------------------------------
   function startGame() {
@@ -431,7 +433,7 @@ function init() {
         clearInterval(timerIdOne)
         highScore()
       }
-    }, 600)
+    }, speed)
   }
 
 
@@ -477,6 +479,7 @@ function init() {
     playingNow = false
     result = 'won'
     laserCount = 0
+    speed = 0
     playR.disabled = false
     playM.disabled = false
     playRC.disabled = false
