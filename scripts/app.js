@@ -6,6 +6,7 @@ function init() {
   const playR = document.querySelector('.play-button-rick')
   const playM = document.querySelector('.play-button-morty')
   const playRC = document.querySelector('.play-button-rickCom')
+  const overLay = document.querySelector('#overlay')
   const cells = []
   const scoreDisplay = document.querySelector('#score')
   const HSscoreDisplay = document.querySelector('#HSscore')
@@ -68,6 +69,7 @@ function init() {
   ]
   const leftEdge = [0, 12, 24, 36, 48, 60, 66, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216]
   const rightEdge = [11, 23, 35, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167, 179, 191, 203, 215, 227]
+  const bottomSide = [216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 227]
   let jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
   let playerClass = ''
   let HSImageClass = ''
@@ -83,6 +85,7 @@ function init() {
   let laserCount = 0
   let jerrySpeed = 0
   let bombSpeed = 0
+  let points = 0
   playR.disabled = false
   playM.disabled = false
   playRC.disabled = false
@@ -149,15 +152,18 @@ function init() {
     const isOnRightEdge = rightEdge.some(edge => {
       return cells[edge].classList.contains('jerry')
     })
+    const isOnBottomSide = bottomSide.some(side => {
+      return cells[side].classList.contains('jerry')
+    })
     
     jerrysIndex.forEach(jerry => {
       cells[jerry.currentIndex].classList.remove('pickle-explosion')
       cells[jerry.currentIndex].classList.remove('jerry-explosion')
     })
-
     removeJerrys()
-    
-    if (isOnLeftEdge && direction === 're') {
+    if (isOnBottomSide) {
+      rickDead = true
+    } else if (isOnLeftEdge && direction === 're') {
       console.log('on left going right + 1')
       direction = 'r'
       jerrysIndex = jerrysIndex.map(jerry => {
@@ -194,8 +200,7 @@ function init() {
       jerrysIndex = jerrysIndex.map(jerry => {
         return { ...jerry, currentIndex: jerry.currentIndex - 1 }
       })
-    } 
-
+    }
     addJerrys()
   } 
   
@@ -233,7 +238,7 @@ function init() {
   //* JERRYS SOUND--------------------------------------------------------------
   function jerrySound() {
     if (cells[width].classList.contains('jerry')) {
-      setTimeout(playMainAudio('show-me'), 5000)
+      setTimeout(playFourthAudio('show-me'), 5000)
     }
   }
 
@@ -272,7 +277,7 @@ function init() {
           })
 
           cells[laserIndex].classList.remove('pickle-rick')
-          playerScore += 150
+          playerScore += 200
           scoreDisplay.textContent = playerScore  
           console.log('jerry shot')
 
@@ -308,7 +313,7 @@ function init() {
           })
 
           cells[laserIndex].classList.remove(imageWeaponClass)
-          playerScore += 100
+          playerScore += points
           scoreDisplay.textContent = playerScore  
           console.log('jerry shot')
 
@@ -326,7 +331,7 @@ function init() {
     }
   }
 
-  //* JERRYS BOMBS-----------------------------------------------------------------
+  //* JERRYS BOMBS------------------------------------------------------------------------
   function bombs() {
     const aliveJerrys = jerrysIndex.filter(jerry => {
       return jerry.isAlive 
@@ -361,8 +366,9 @@ function init() {
       audioExitClass = 'lick-my-balls'
       audioWeaponClass = 'laserRickCom'
       imageWeaponClass = 'rickComWeapon'
-      jerrySpeed = 250
-      bombSpeed = 80
+      jerrySpeed = 350
+      bombSpeed = 110
+      points = 155
       startGame()
       console.log('rickComChar')
     }
@@ -374,8 +380,9 @@ function init() {
       audioExitClass = 'and-thats-the-way-news-goes'
       audioWeaponClass = 'laserRick'
       imageWeaponClass = 'rickWeapon'
-      jerrySpeed = 600
-      bombSpeed = 130
+      jerrySpeed = 500
+      bombSpeed = 150
+      points = 125
       startGame()
       console.log('rickChar')
     }
@@ -389,6 +396,7 @@ function init() {
       imageWeaponClass = 'mortyWeapon'
       jerrySpeed = 800  
       bombSpeed = 180
+      points = 95
       startGame()
       console.log('mortyChar')
     }
@@ -396,7 +404,6 @@ function init() {
   
   //* STARTS GAME WITH SELECTED CHARACTER AND DISBLES BUTTONS--------------------------------
   function startGame() {
-    playBackgroundAudio('background-music')
     playR.disabled = true
     playM.disabled = true
     playRC.disabled = true
@@ -410,13 +417,13 @@ function init() {
       const winOrNo = jerrysIndex.every(jerry => {
         return !jerry.isAlive
       })
-      
+    
       if (rickDead) {
         playThirdAudio('bomb')
         cells[rickIndex].classList.remove(playerClass)
         cells[rickIndex].classList.add('rick-explosion')
         highScore()
-        setTimeout(playMainAudio('goddamn'), 1000)
+        setTimeout(playMainAudio('goddamn'), 2000)
         result = 'died!'
         playingNow = false
         clearInterval(timerIdOne)
@@ -446,7 +453,14 @@ function init() {
     if (confirm === true) {
       restartGame()
     } else {
-      window.alert('Bye')
+      window.alert(' G A M E  O V E R')
+      cells.forEach(cell => {
+        cell.classList = ''
+      })
+  
+      for (let i = 0; i < 100; i++) {
+        clearInterval(i)
+      }
     }
   }
 
@@ -462,12 +476,15 @@ function init() {
     }
   }
 
-
   //* RESTART FUNCTION ----------------------------------------------------------------
   function restartGame() {
     cells.forEach(cell => {
       cell.classList = ''
     })
+
+    for (let i = 0; i < 100; i++) {
+      clearInterval(i)
+    }
 
     rickIndex = 222
     rickDead = false
@@ -484,28 +501,28 @@ function init() {
     laserCount = 0
     jerrySpeed = 0
     bombSpeed = 0
+    points = 0
     playR.disabled = false
     playM.disabled = false
     playRC.disabled = false
   }
 
+  //* GETS RID OF INSTRUCTION PAGE FROM INITIAL LOAD-------------------------------
+  function clearOL() {
+    overLay.style.display = 'none'
+  }
 
   createGrid()
-
-  //*EVENT LISTENERS---------------------------------------
+  //* EVENT LISTENERS---------------------------------------
   playR.addEventListener('mouseenter', whichClass)
   playM.addEventListener('mouseenter', whichClass)
   playRC.addEventListener('mouseenter', whichClass)
-
-  playR.addEventListener('click', playBackgroundAudio)
-  playM.addEventListener('click', playBackgroundAudio)
-  playRC.addEventListener('click', playBackgroundAudio)
-  
+  overLay.addEventListener('click', playBackgroundAudio)
+  overLay.addEventListener('click', clearOL)
   document.addEventListener('keydown', handleKeyDown)
 
 
 
 
 }
-
 window.addEventListener('DOMContentLoaded', init)

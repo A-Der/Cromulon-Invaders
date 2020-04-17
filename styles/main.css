@@ -6,13 +6,10 @@ body {
 
 .main-flexbox {
   display: flex;
-  /* justify-content: space-evenly; */
   background-image: url(../assets/allBackground.png);
   background-size: cover;
   background-attachment: fixed;
 }
-
-
 
 .currentHS {
   display: flex;
@@ -30,8 +27,6 @@ body {
   text-shadow: 0 0 10px rgb(11, 236, 11),
   0 0 10px rgba(225, 241, 3),
   0 0 5px rgba(201, 17, 238);
-
-  /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
 }
 
 .HSbar p {
@@ -39,18 +34,15 @@ body {
   margin-bottom: 10px;
 }
 
-
 .HSImage {
-  /* background-color: royalblue; */
   width: 360px;
   height: 850px;
   background-size: 350px;
   background-repeat: no-repeat;
   margin-top: 3px;
-  /* padding-right: 30px; */
 }
 
- .HSrickCom {
+.HSrickCom {
   background-image: url(../assets/rick-commanderHS.png);
 }
 
@@ -70,7 +62,6 @@ body {
         0 0 10px rgba(225, 241, 3),
         0 0 5px rgba(201, 17, 238);
 }
-
 
 .game-score-bar {
   display: flex;
@@ -105,7 +96,7 @@ body {
 }
 
 .play-button-rick, .play-button-rickCom, .play-button-morty {
-background-color: rgba(236, 236, 140, 0.3);
+  background-color: rgba(236, 236, 140, 0.3);
   box-shadow: 0 0 15px 11px rgba(243, 243, 170, 0.3);
   background-image: url(../assets/rick-char.png);
   background-repeat: no-repeat;
@@ -116,9 +107,14 @@ background-color: rgba(236, 236, 140, 0.3);
   border-radius: 65px;
   border: none;
   outline: none;
+  font-size: 10px;
+  color: aliceblue;
+  text-shadow: 0 0 10px rgb(215, 0, 243),
+  0 0 10px rgb(3, 98, 241),
+  0 0 5px rgb(201, 17, 238);
 }
 
- .button, #rickChar {
+.button, #rickChar {
   background-image: url(../assets/rick-char.png);
   background-size: 115px;
   }
@@ -133,34 +129,6 @@ background-color: rgba(236, 236, 140, 0.3);
       background-size: 75px;
       }
 
-/* .button-rickChar {
-background-image: url(../assets/rick-char.png);
-background-repeat: no-repeat;
-background-position: center;
-background-size: 80px;
-height: 100px;
-width: 80px;
-}
-
-.button-mortyChar {
-  background-image: url(../assets/one-true-morty-char.png);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 80px;
-  height: 100px;
-  width: 80px;
-  }
-
-  .button-rickComChar {
-    background-image: url(../assets/rick-commander-char.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 50px;
-    height: 100px;
-    width: 80px;
-    } */
-
-
 .grid {
   display: flex;
   background-image: url(../assets/background.gif);
@@ -174,9 +142,7 @@ width: 80px;
   border-radius: 30px;
   box-shadow: 0 0 20px 20px rgba(0, 243, 0, 0.5),
         0 0 30px 40px rgba(225, 241, 3, 0.5),
-        0 0 45px 60px rgba(201, 17, 238, 0.5);
-  /* box-shadow: 0 0 25px 25px rgba(43, 247, 2, 0.4); */
-  
+        0 0 45px 60px rgba(201, 17, 238, 0.5);  
 }
 
 .grid div {
@@ -189,77 +155,65 @@ width: 80px;
 
 .grid .rickPlayer {
   background-image: url(../assets/rick-sprite.png);
- 
 }
 
-.grid .rickComPlayer {
-  background-image: url(../assets/rick-commander-back.png);
-  /* background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center; */
+  .grid .rickComPlayer {
+    background-image: url(../assets/rick-commander-back.png);
 }
 
-.grid .mortyPlayer {
-  background-image: url(../assets/true-morty-back.png);
-  /* background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center; */
+    .grid .mortyPlayer {
+      background-image: url(../assets/true-morty-back.png);
 }
 
 .grid div.pickle-rick {
   background-image: url(../assets/pickle-rick.gif);
-  /* background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center; */
 }
   
   .grid div.jerry {
     background-image: url(../assets/jerry-sprite.gif);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
   }
 
-  .grid div.rickWeapon {
+
+.grid div.rickWeapon {
     background-image: url(../assets/laser.png);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
-  }
+}
 
   .grid div.rickComWeapon {
-    background-image: url(../assets/rick-com-weapon.gif);
-  }
+      background-image: url(../assets/rick-com-weapon.gif);
+}
 
-  .grid div.mortyWeapon {
-    background-image: url(../assets/morty-weapon.gif);
-  }
+    .grid div.mortyWeapon {
+        background-image: url(../assets/morty-weapon.gif);
+}
 
   .grid div.bomb {
     background-image: url(../assets/bomb.gif);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
   }
 
   .grid div.jerry-explosion {
     background-image: url(../assets/jerry-explosion.gif);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
   }
-
 
   .grid div.rick-explosion {
     background-image: url(../assets/rick-explosion.gif);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
   }
 
   .grid div.pickle-explosion {
     background-image: url(../assets/pickle-explosion.gif);
-    /* background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center; */
+  }
+
+  #overlay {
+    font-size: 30px;
+    color: rgb(208, 189, 238);
+    position: fixed;
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); 
+    z-index: 2; 
+    cursor: pointer; 
   }
