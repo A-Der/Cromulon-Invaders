@@ -219,19 +219,19 @@ function init() {
   }
   function playThirdAudio(e) {
     console.log('splat')
-    thirdAudio.src = `../assets/${e}.wav`
+    thirdAudio.src = `./assets/${e}.wav`
     thirdAudio.play()
   }
 
   function playFourthAudio(e){
     console.log('pickle')
-    fourthAudio.src = `../assets/${e}.wav`
+    fourthAudio.src = `./assets/${e}.wav`
     fourthAudio.play()
   }
 
   function playBackgroundAudio(){
     console.log('background music')
-    backgroundAudio.src = '../assets/background-music.wav'
+    backgroundAudio.src = './assets/background-music.wav'
     backgroundAudio.play()
   }
 
