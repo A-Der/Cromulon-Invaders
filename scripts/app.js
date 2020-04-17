@@ -366,7 +366,7 @@ function init() {
       audioExitClass = 'lick-my-balls'
       audioWeaponClass = 'laserRickCom'
       imageWeaponClass = 'rickComWeapon'
-      jerrySpeed = 350
+      jerrySpeed = 290
       bombSpeed = 110
       points = 155
       startGame()
@@ -482,7 +482,7 @@ function init() {
       cell.classList = ''
     })
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 1000; i++) {
       clearInterval(i)
     }
 
