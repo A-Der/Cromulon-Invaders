@@ -19,11 +19,11 @@ function init() {
 
   //*GRID VARIABLES
   const width = 12
-  const height = 19
-  const cellCount = width * height
+  const height = 18
+  const cellCount = (width * height) 
 
   //* GAME VARIABLES
-  let rickIndex = 222
+  let rickIndex = 210
   let rickDead = false
   const armyIndex = [
     { currentIndex: 0, isAlive: true },
@@ -67,9 +67,9 @@ function init() {
     { currentIndex: 44, isAlive: true },
     { currentIndex: 45, isAlive: true }
   ]
-  const leftEdge = [0, 12, 24, 36, 48, 60, 66, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216]
-  const rightEdge = [11, 23, 35, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167, 179, 191, 203, 215, 227]
-  const bottomSide = [216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 227]
+  const leftEdge = [0, 12, 24, 36, 48, 60, 66, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204]
+  const rightEdge = [11, 23, 35, 47, 59, 71, 83, 95, 107, 119, 131, 143, 155, 167, 179, 191, 203, 215]
+  const bottomSide = [204, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215]
   let jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
   let playerClass = ''
   let HSImageClass = ''
@@ -486,7 +486,7 @@ function init() {
       clearInterval(i)
     }
 
-    rickIndex = 222
+    rickIndex = 210
     rickDead = false
     jerrysIndex = JSON.parse(JSON.stringify(armyIndex))
     playerClass = ''
