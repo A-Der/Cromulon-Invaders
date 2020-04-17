@@ -81,7 +81,8 @@ function init() {
   let playingNow = false
   let result = 'won'
   let laserCount = 0
-  let speed = 0
+  let jerrySpeed = 0
+  let bombSpeed = 0
   playR.disabled = false
   playM.disabled = false
   playRC.disabled = false
@@ -102,7 +103,6 @@ function init() {
       }
     })
   }
-
 
   //* FUNCTIONS
   function createGrid() {
@@ -233,13 +233,13 @@ function init() {
   //* JERRYS SOUND--------------------------------------------------------------
   function jerrySound() {
     if (cells[width].classList.contains('jerry')) {
-      setTimeout(playMainAudio('show-me'), 3000)
+      setTimeout(playMainAudio('show-me'), 5000)
     }
   }
 
   //*LASER FROM RICK WILL CONTINUE UNTIL 2 SCENRIOS; 1: REACHES TOP OF BOARD AND STOPS. 2: HITS JERRY, STOPS AND ADDS POINTS TO SCORE
   function laser() {
-    if (laserCount === 13){
+    if (laserCount === 18){
       laserCount = 0
 
       playFourthAudio('pickle-rick')
@@ -249,7 +249,7 @@ function init() {
           clearInterval(timerId)
       
         } else if (cells[laserIndex].classList.contains('jerry')) {
-          playThirdAudio('pickleKillJ')
+          playMainAudio('pickleKillJ')
           clearInterval(timerId)
           cells[laserIndex].classList.remove('jerry')
           cells[laserIndex + 1].classList.remove('jerry')
@@ -349,7 +349,7 @@ function init() {
     
         cells[bombIndex].classList.add('bomb')
       }
-    },120)
+    },bombSpeed)
   }
   
   //* FUNCTION TO CHANGE CHARACTERS IMAGES/AUDIOS/WEAPONS ACCORDING TO CHOICE AND START GAME-----------------
@@ -361,7 +361,8 @@ function init() {
       audioExitClass = 'lick-my-balls'
       audioWeaponClass = 'laserRickCom'
       imageWeaponClass = 'rickComWeapon'
-      speed = 400
+      jerrySpeed = 250
+      bombSpeed = 80
       startGame()
       console.log('rickComChar')
     }
@@ -370,10 +371,11 @@ function init() {
       playerClass = 'rickPlayer'
       HSImageClass = 'HSrick'
       audioIntroClass = 'wub-a-lub'
-      audioExitClass = 'and-thats-the-way-the-news-goes'
+      audioExitClass = 'and-thats-the-way-news-goes'
       audioWeaponClass = 'laserRick'
       imageWeaponClass = 'rickWeapon'
-      speed = 600
+      jerrySpeed = 600
+      bombSpeed = 130
       startGame()
       console.log('rickChar')
     }
@@ -385,7 +387,8 @@ function init() {
       audioExitClass = 'i-love-morty'
       audioWeaponClass = 'mortyLaser'
       imageWeaponClass = 'mortyWeapon'
-      speed = 800
+      jerrySpeed = 800  
+      bombSpeed = 180
       startGame()
       console.log('mortyChar')
     }
@@ -433,7 +436,7 @@ function init() {
         clearInterval(timerIdOne)
         highScore()
       }
-    }, speed)
+    }, jerrySpeed)
   }
 
 
@@ -479,7 +482,8 @@ function init() {
     playingNow = false
     result = 'won'
     laserCount = 0
-    speed = 0
+    jerrySpeed = 0
+    bombSpeed = 0
     playR.disabled = false
     playM.disabled = false
     playRC.disabled = false
