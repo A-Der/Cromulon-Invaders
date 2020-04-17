@@ -208,13 +208,13 @@ function init() {
   //*SOUND FUNCTIONS------------------------------------------------------------------------
   function playMainAudio(e) {
     console.log('main audio')
-    mainAudio.src = `../assets/${e}.wav`
+    mainAudio.src = `./assets/${e}.wav`
     mainAudio.play()
   }
     
   function playSecondAudio(e){
     console.log('shoot')
-    secondAudio.src = `../assets/${e}.wav`
+    secondAudio.src = `./assets/${e}.wav`
     secondAudio.play()
   }
   function playThirdAudio(e) {
