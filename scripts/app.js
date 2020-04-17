@@ -122,14 +122,14 @@ function init() {
     if (playingNow && rickDead === false) {
       switch (event.keyCode) {
         case 37:
-          if (rickIndex > 216) {
+          if (rickIndex > 204) {
             cells[rickIndex].classList.remove(playerClass)
             cells[rickIndex--]
             cells[rickIndex].classList.add(playerClass)
           }
           break
         case 39:
-          if (rickIndex < 227){
+          if (rickIndex < 215){
             cells[rickIndex].classList.remove(playerClass)
             cells[rickIndex++]
             cells[rickIndex].classList.add(playerClass)
