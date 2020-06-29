@@ -34,7 +34,7 @@ I thought the best way to display my players/enemies and go about desiging funct
 # Movement
 The movement for the player was very straight foward. The left arrow key would remove the CSS class of the players image, - 1 from their index and applying again the CSS image. It would be + 1 for the right arrow key and the keys would do nothing if the index of the player was at either edge of the grid and trying to go off the grid.
 
-Movement for the aliens was more complex. I first defined the left and right edge of the grid. These were 2 separate arrays of the indexs of the divs on the left and right edge of the grid. 
+Movement for the aliens was more complex. I first defined the left and right edge of the grid. These were 2 separate arrays of the indexes of the divs on the left and right edge of the grid. 
 Then using if statements I moved my array of aliens, starting from the left, until hitting the right edge. The logic being; if right edge contains a class of alien, then + the grid width to all the indexes of the aliens, so as to show them as moving downwatds in a vertical move. I then had other if statements in the same function to move my aliens - 1 repeatedly until hitting the left edge and so on until they either all get killed or hit the bottom row (where the player is) resulting in game over.
 
 ![my screenshot](readme-images/edges.png)
