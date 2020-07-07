@@ -20,7 +20,7 @@ https://github.com/A-Der/sei-project-1
 - Have a single player who pans across the bottom of the game grid and can shoot the enemy
 Have an army of enemys who slowy work across the grid and down towards the player
 - The enemies should randomly drop bombs at the player and the player should be able to shoot the enemy
-- Create logic to determins if the player has won or lost the game
+- Create logic to determine if the player has won or lost the game
 - Created using HTML, CSS and JavaScript only
 - Deploy online
 
