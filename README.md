@@ -17,7 +17,7 @@ https://github.com/A-Der/sei-project-1
 - Render the game in the browser
 - Select difficulty level by selecting which character to be
 - Have a single player who pans across the bottom of the game grid and can shoot the enemy
-Have an army of enemies who slowly work across the grid and down towards the player
+- Have an army of enemies who pan across the grid and down towards the player
 - The enemies should randomly drop bombs at the player and the player should be able to shoot the enemy
 - Create logic to determine if the player has won or lost the game
 - Created using HTML, CSS and JavaScript only
@@ -84,3 +84,7 @@ Things I would like to implement:
 - Other game modes where the enemies are non-stop and speed up over time
 - A better scoreboard to keep track of previous scores not just the highest one overall
 - 2nd player mode using W,S,D keys so 2 people can play at once and use the shift button to shoot for the second player.
+
+# Key Learnings
+- As this was my first ever project there were a lot of valuable experiences I had in only 8 days. Most notably for me was the value of pseudo coding as much as necessary in the initial stages as opposed to figuring it out along the way (which I had experimented in class labs previously). This really created a blueprint in my brain to follow and found the actual construction of the app much more seamless.
+- I also learnt how effective it is to step back from a problem I was stuck on as opposed to wrestling with it until exhaustion. I felt like I would be giving up if I were to stop when it was unsolved. Through more experience I realised how quickly things can make themselves clear when you give it some breathing space and come back with fresh eyes and perhaps more research on the web.
